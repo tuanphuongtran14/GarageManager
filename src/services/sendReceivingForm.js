@@ -35,7 +35,7 @@ module.exports = async formInput => {
             isRepaired: false
         }).save();
     } else {
-        if(car.carOwner !== customer._id) {
+        if(car.carOwner.toString() !== customer._id.toString()) {
             throw new Error(`Custom is not car owner`);
         }
     }
