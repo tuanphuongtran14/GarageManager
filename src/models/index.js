@@ -2,8 +2,10 @@ const mongoose = require('mongoose');
 const dbConfig = require('../configs/database.config');
 const { initCustomer } = require('./Customer');
 const { initCar } = require('./Car');
-const { initCarBrand } = require('./CarBrand')
-const { initReceivingForm } = require('./ReceivingForm')
+const { initCarBrand } = require('./CarBrand');
+const { initReceivingForm } = require('./ReceivingForm');
+const { initAccessary } = require('./Accessary');
+const { initWage } = require('./Wage');
 
 const db = {};
 
@@ -16,5 +18,7 @@ db.Customer = initCustomer(mongoose);
 db.Car = initCar(mongoose);
 db.CarBrand = initCarBrand(mongoose);
 db.ReceivingForm = initReceivingForm(mongoose);
+db.Accessary = initAccessary(mongoose);
+db.Wage = initWage(mongoose);
 
 module.exports = db;

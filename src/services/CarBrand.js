@@ -7,3 +7,11 @@ exports.create = input => {
 
     return newCarBrand.save();
 }
+
+exports.find = () =>{
+    return CarBrand.find({});
+}
+
+exports.findOne = (CarBrandID) =>{
+    return CarBrand.findById(CarBrandID);
+}

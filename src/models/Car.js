@@ -4,7 +4,7 @@ exports.initCar = function(mongoose) {
     // Create Car Schema
     const carSchema = new Schema({
         licensePlate: {type: String, unique: true, index: true},
-        debt: Number,
+        debt: {type: Number, default: 0},
         isRepaired: Boolean,
         carBrand: { type: Schema.Types.ObjectId, ref: 'CarBrand' },
         carOwner: { type: Schema.Types.ObjectId, ref: 'Customer' }
