@@ -8,6 +8,7 @@ const { initAccessary } = require('./Accessary');
 const { initWage } = require('./Wage');
 const { initRepairVoteDetail } = require('./RepairVoteDetail');
 const { initRepairVote } = require('./RepairVote');
+const { initBill } = require('./Bill');
 
 const db = {};
 
@@ -24,5 +25,6 @@ db.Accessary = initAccessary(mongoose);
 db.Wage = initWage(mongoose);
 db.RepairVote = initRepairVote(mongoose);
 db.RepairVoteDetail = initRepairVoteDetail(mongoose);
+db.Bill = initBill(mongoose);
 
 module.exports = db;
