@@ -1,5 +1,5 @@
-const CarBrandService = require('../services/CarBrand');
-const {find, findOne, create } = require('../configs/controller.template.config')(CarBrandService);
+const { CarBrand } = require('../models');
+const {find, findOne, create } = require('../configs/controller.template.config')(CarBrand);
 
 /* ````````````Declare your custom controller here `````````````````````*/
 
