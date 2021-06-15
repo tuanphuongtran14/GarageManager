@@ -1,6 +1,6 @@
 const { Car } = require('../models');
 const CarServices = require('../services/Car');
-const CRUDController = require('./CRUD.template')(Car);
+const { findOne, create } = require('./CRUD.template')(Car);
 
 /* ````````````Declare your custom controller here `````````````````````*/
 
@@ -26,10 +26,24 @@ const search = async (req, res) => {
         });
     }
 }
+
+const find = async (req, res) => {
+    try {
+        let objList = await CarServices.find();
+        return res.status(200).json(objList);
+    } catch(err) {
+        return res.status(500).json({
+            statusCode: 500,
+            message: err.message || `Some errors occur while finding cars list`
+        });
+    }
+};
 /* `````````````````````````````````````````````````````````````````````*/
 
 module.exports = {
-    ...CRUDController,
-    search
+    search,
+    find,
+    findOne, 
+    create
     // Include your custom controller here
 }

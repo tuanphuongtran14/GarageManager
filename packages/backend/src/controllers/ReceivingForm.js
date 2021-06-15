@@ -1,6 +1,9 @@
-const sendForm = require('../services/sendReceivingForm');
+const { Accessary } = require('../models');
+const CRUDController = require('./CRUD.template')(Accessary);
+const sendForm = require('../services/ReceivingForm');
 
-module.exports = async (req, res) =>{
+/* ````````````Declare your custom controller here `````````````````````*/
+const send = async (req, res) =>{
     let formInput = req.body;
 
     // If input is null, return 400 Error
@@ -25,3 +28,12 @@ module.exports = async (req, res) =>{
         });
     }
 }
+
+/* `````````````````````````````````````````````````````````````````````*/
+
+module.exports = {
+    ...CRUDController,
+    send
+    // Include your custom controller here
+}
+
