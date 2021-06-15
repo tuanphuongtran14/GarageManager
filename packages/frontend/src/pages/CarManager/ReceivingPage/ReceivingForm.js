@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import callAPI from '../../../utils/apiCaller';
 import Select from 'react-select';
+import callAPI from '../../../utils/apiCaller';
+import { connect } from 'react-redux';
+import * as actions from '../../../redux/actions/index'
 
-export default function ReceivingForm() {
+function ReceivingForm(props) {
     const [cars, setCars] = useState([]);
     const [carBrands, setCarBrands] = useState([]);
     const [selectedCarBrand, setSelectedCarBrand] = useState();
@@ -15,7 +17,6 @@ export default function ReceivingForm() {
             .then(res => {
                 if (res && res.status === 200) {
                     setCars([...res.data]);
-                    console.log(res.data);
                 }
             });
     }, []);
@@ -32,7 +33,6 @@ export default function ReceivingForm() {
                         }
                     });
                     setCarBrands(brandSelectOtions);
-                    console.log(brandSelectOtions);
                     setSelectedCarBrand(brandSelectOtions[0]);
                 }
             });
@@ -41,15 +41,15 @@ export default function ReceivingForm() {
     // set min date for receiving date input
     useEffect(() => {
         var dtToday = new Date();
-    
+
         var month = dtToday.getMonth() + 1;
         var day = dtToday.getDate();
         var year = dtToday.getFullYear();
-        if(month < 10)
+        if (month < 10)
             month = '0' + month.toString();
-        if(day < 10)
+        if (day < 10)
             day = '0' + day.toString();
-        
+
         var maxDate = year + '-' + month + '-' + day;
         setMinReceivingDate(maxDate);
 
@@ -64,7 +64,7 @@ export default function ReceivingForm() {
         let toDay = new Date(minReceivingDate);
         let receivingDate = new Date(value);
 
-        if(receivingDate < toDay) {
+        if (receivingDate < toDay) {
             window.alert("Ngày tiếp nhận phải lớn hơn hoặc bằng ngày hiện tại");
             document.getElementById('receivingDate').value = minReceivingDate
         }
@@ -81,7 +81,7 @@ export default function ReceivingForm() {
         let value = target.value;
 
         carPlate.value = value.toUpperCase();
-        
+
         for (let i = 0; i < cars.length; i++) {
             // If exist car plate in database before
             if (cars[i].licensePlate === value) {
@@ -90,7 +90,7 @@ export default function ReceivingForm() {
                 nameInput.disabled = true;
 
                 // Set value and disable car brand select
-                setSelectedCarBrand({value: cars[i].carBrand._id, label: cars[i].carBrand.name})
+                setSelectedCarBrand({ value: cars[i].carBrand._id, label: cars[i].carBrand.name })
                 setDisableCarBrandSelect(true);
 
                 // Set value customer phone
@@ -124,10 +124,55 @@ export default function ReceivingForm() {
         setSelectedCarBrand(selectedOption);
     }
 
+    let inputElement;
+
     // Handle when submit form
     const handleSubmit = (event) => {
         event.preventDefault();
+        const licensePlate = document.getElementById('licensePlate');
+        const name = document.getElementById('name');
+        const email = document.getElementById('email');
+        const phoneNumber = document.getElementById('phoneNumber');
+        const address = document.getElementById('address');
         const receivingDate = document.getElementById('receivingDate');
+
+
+        const formData = {
+            licensePlate: licensePlate.value,
+            name: name.value,
+            email: email.value,
+            phoneNumber: phoneNumber.value,
+            address: address.value,
+            receivingDate: receivingDate.value,
+            carBrand: selectedCarBrand.label
+        }
+
+        console.log(formData);
+
+        callAPI('POST', '/api/receiving-forms/send', formData)
+            .then(res => {
+                if (res && res.status === 201) {
+                    window.alert("Đã tiếp nhận xe mang biển số " + licensePlate.value);
+                    inputElement.click();
+
+                    callAPI('GET', '/api/cars')
+                        .then(res => {
+                            if (res && res.status === 200) {
+                                setCars([...res.data]);
+                            }
+                        });
+
+                        callAPI('GET', '/api/receiving-forms')
+                        .then(res => {
+                            if (res && res.status === 200) {
+                                props.fetchReceivingList(res.data);
+                            }
+                        })
+                } else {
+                    window.alert("Không thể tiếp nhận vì: Xe mang biển số " + licensePlate.value + " đã được tiếp nhận trước đó");
+                }
+            })
+
     }
 
     // Handle when submit form 
@@ -136,7 +181,7 @@ export default function ReceivingForm() {
         const phoneNumberInput = document.getElementById('phoneNumber');
         const emailInput = document.getElementById('email');
         const addressInput = document.getElementById('address');
-        
+
         nameInput.disabled = false;
         setDisableCarBrandSelect(false);
         phoneNumberInput.disabled = false;
@@ -144,9 +189,11 @@ export default function ReceivingForm() {
         addressInput.disabled = false;
     }
 
+
+
     return (
         <div>
-            <form>
+            <form id="receiving-form">
                 <div className="row px-0">
                     <div className="col-6">
                         <div className="form-group">
@@ -157,11 +204,11 @@ export default function ReceivingForm() {
                     <div className="col-6 pl-0">
                         <div className="form-group">
                             <label>Hiệu xe</label>
-                            <Select 
-                                id="carBrand" 
-                                placeholder={"Chọn hiệu xe"} 
-                                options={carBrands} 
-                                value={selectedCarBrand} 
+                            <Select
+                                id="carBrand"
+                                placeholder={"Chọn hiệu xe"}
+                                options={carBrands}
+                                value={selectedCarBrand}
                                 onChange={handleBrandOnChange}
                                 isDisabled={disableCarBrandSelect}
                                 components={{
@@ -196,10 +243,26 @@ export default function ReceivingForm() {
                     <input type="date" id="receivingDate" name="receivingDate" className="form-control" onBlur={handleReceivingDateOnChange} />
                 </div>
                 <div className="d-flex justify-content-between mt-4">
-                    <button type="reset" className="btn btn-danger" onClick={handleReset}><i className="fas fa-redo"></i> &nbsp; Nhập lại</button>
                     <button type="submit" className="btn btn-success w-50" onClick={handleSubmit}>Gửi ngay</button>
+                    <button type="reset" ref={input => inputElement = input} className="btn btn-danger" onClick={handleReset}><i className="fas fa-redo"></i> &nbsp; Nhập lại</button>
                 </div>
             </form>
         </div>
     )
 }
+
+const mapStateToProps = (state) => {
+    return {
+        receivingList: state.receivingForm.receivingList
+    }
+}
+
+const mapDispatchToProps = (dispatch, props) => {
+    return {
+        fetchReceivingList: (receivingList) => {
+            dispatch(actions.updateReceivingList(receivingList));
+        }
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ReceivingForm)

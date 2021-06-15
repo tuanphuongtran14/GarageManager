@@ -16,7 +16,6 @@ function App(props) {
     }
   }
   
-  console.log(props.authorization);
   return (
     <div className="App">
       {display()}

@@ -7,3 +7,10 @@ export const setLogin = (userInfo, token) => {
         token
     }
 }
+
+export const updateReceivingList = (receivingList) => {
+    return {
+        type: types.UPDATE_RECEIVING_LIST,
+        receivingList
+    }
+}

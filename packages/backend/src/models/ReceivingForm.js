@@ -4,7 +4,8 @@ exports.initReceivingForm = function(mongoose) {
     // Create Receving Form Schema
     const receivingFormSchema = new Schema({
         car: { type: Schema.Types.ObjectId, ref: 'Car' },
-        receivingDate: Date
+        receivingDate: Date,
+        isRepaired: {type: Boolean, default: false}
     });
 
     // Create Receving Form Model

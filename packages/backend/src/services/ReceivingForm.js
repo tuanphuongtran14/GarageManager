@@ -23,12 +23,13 @@ exports.sendForm = async formInput => {
         licensePlate: formInput.licensePlate
     });
 
+
     // If car has not existed, create new car
     if(!car) {
         let carBrand = await CarBrand.findOne({
             name: formInput.carBrand
         });
-
+        
         car = await new Car({
             licensePlate: formInput.licensePlate,
             carOwner: customer._id,
@@ -36,6 +37,7 @@ exports.sendForm = async formInput => {
             debt: 0,
             isRepaired: false
         }).save();
+
     } else {
         if(car.carOwner.toString() !== customer._id.toString()) {
             throw new Error(`Custom is not car owner`);
@@ -45,12 +47,23 @@ exports.sendForm = async formInput => {
     // Create new receiving form
     let receivingForm = await new ReceivingForm({
         car: car._id,
-        receivingDate: new Date(formInput.receivingDate)
+        receivingDate: new Date(formInput.receivingDate),
+        isRepaired: false
     });
 
     await receivingForm.save();
     
     return receivingForm;
+}
+
+exports.find = () =>{
+    return ReceivingForm.find({}).populate({ 
+        path: 'car',
+        populate: {
+          path: 'carOwner',
+          model: 'Customer'
+        } 
+     });
 }
 /* `````````````````````````````````` */
 

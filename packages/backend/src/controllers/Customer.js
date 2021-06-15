@@ -1,6 +1,6 @@
-const { Accessary } = require('../models');
-const accessaryServices = require('../services/Accessary');
-const {find, findOne, create } = require('../configs/controller.template.config')(Accessary);
+const { Customer } = require('../models');
+const customerServices = require('../services/Customer');
+const {find, findOne, create } = require('../configs/controller.template.config')(Customer);
 
 /* ````````````Declare your custom controller here `````````````````````*/
 
