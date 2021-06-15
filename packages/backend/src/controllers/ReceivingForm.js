@@ -1,6 +1,6 @@
-const { Accessary } = require('../models');
-const CRUDController = require('./CRUD.template')(Accessary);
-const sendForm = require('../services/ReceivingForm');
+const { ReceivingForm } = require('../models');
+const { findOne, find, create } = require('../configs/controller.template.config')(ReceivingForm);
+const ReceivingFormService = require('../services/ReceivingForm');
 
 /* ````````````Declare your custom controller here `````````````````````*/
 const send = async (req, res) =>{
@@ -16,7 +16,7 @@ const send = async (req, res) =>{
 
     // If input is not null
     try {
-        let form = await sendForm(formInput);
+        await ReceivingFormService.sendForm(formInput);
         return res.status(201).json({
             statusCode: 201,
             message: 'Receiving your form succesfully'
@@ -32,8 +32,9 @@ const send = async (req, res) =>{
 /* `````````````````````````````````````````````````````````````````````*/
 
 module.exports = {
-    ...CRUDController,
+    find,
+    findOne,
+    create,
     send
-    // Include your custom controller here
 }
 

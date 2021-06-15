@@ -1,6 +1,8 @@
 const { Customer, Car, CarBrand, ReceivingForm } = require('../models');
 
-module.exports = async formInput => {
+/* `````````````````````````````````` */
+// Put your custom services code below this line
+exports.sendForm = async formInput => {
     // If phone number has already existed, find its owner
     let customer = await Customer.findOne({
         phoneNumber: formInput.phoneNumber
@@ -50,3 +52,5 @@ module.exports = async formInput => {
     
     return receivingForm;
 }
+/* `````````````````````````````````` */
+

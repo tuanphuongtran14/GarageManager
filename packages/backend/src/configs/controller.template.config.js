@@ -1,5 +1,5 @@
 module.exports = function(Model) {
-    const CRUDServices = require('../services/CRUD.template')(Model);
+    const services = require('./service.template.config')(Model);
     return {
         create: async (req, res) => {
             let input = req.body;
@@ -14,7 +14,7 @@ module.exports = function(Model) {
         
             // If input is not null, create new car brand
             try {
-                let newDocument = await CRUDServices.create(input);
+                let newDocument = await services.create(input);
                 return res.status(201).json(newDocument);
             } catch (err) {
                 return res.status(500).json({
@@ -25,7 +25,7 @@ module.exports = function(Model) {
         },
         find: async (req, res) => {
             try {
-                let objList = await CRUDServices.find();
+                let objList = await services.find();
                 return res.status(200).json(objList);
             } catch(err) {
                 return res.status(500).json({
@@ -37,7 +37,7 @@ module.exports = function(Model) {
         findOne: async (req, res) => {
             let id = req.params.id;
             try {
-                let document = await CRUDServices.findOne(id);
+                let document = await services.findOne(id);
                 return res.status(200).json(document);
             } catch(err) {
                 return res.status(500).json({

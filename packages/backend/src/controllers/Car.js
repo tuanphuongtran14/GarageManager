@@ -1,6 +1,6 @@
 const { Car } = require('../models');
 const CarServices = require('../services/Car');
-const { findOne, create } = require('./CRUD.template')(Car);
+const { findOne, create } = require('../configs/controller.template.config')(Car);
 
 /* ````````````Declare your custom controller here `````````````````````*/
 
@@ -45,5 +45,4 @@ module.exports = {
     find,
     findOne, 
     create
-    // Include your custom controller here
 }

@@ -1,5 +1,5 @@
 const { Wage } = require('../models');
-const CRUDController = require('./CRUD.template')(Wage);
+const { find, findOne, create } = require('../configs/controller.template.config')(Wage);
 
 /* ````````````Declare your custom controller here `````````````````````*/
 
@@ -7,6 +7,7 @@ const CRUDController = require('./CRUD.template')(Wage);
 /* `````````````````````````````````````````````````````````````````````*/
 
 module.exports = {
-    ...CRUDController
-    // Include your custom controller here
+    find,
+    findOne,
+    create
 }

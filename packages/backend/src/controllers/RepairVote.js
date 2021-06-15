@@ -1,6 +1,6 @@
 const { RepairVote } = require('../models');
 const RepairVoteServices = require('../services/RepairVote');
-const { find, findOne} = require('./CRUD.template')(RepairVote);
+const { find, findOne} = require('../configs/controller.template.config')(RepairVote);
 
 /* ````````````Declare your custom controller here `````````````````````*/
 
@@ -33,5 +33,4 @@ module.exports = {
     find,
     findOne,
     create
-    // Include your custom controller here
 }

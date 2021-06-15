@@ -1,5 +1,5 @@
 const { RepairVoteDetail } = require('../models');
-const CRUDController = require('./CRUD.template')(RepairVoteDetail);
+const { find, findOne, create } = require('../configs/controller.template.config')(RepairVoteDetail);
 
 /* ````````````Declare your custom controller here `````````````````````*/
 
@@ -7,6 +7,7 @@ const CRUDController = require('./CRUD.template')(RepairVoteDetail);
 /* `````````````````````````````````````````````````````````````````````*/
 
 module.exports = {
-    ...CRUDController
-    // Include your custom controller here
+    find,
+    findOne,
+    create
 }

@@ -1,5 +1,7 @@
 const { RepairVote, RepairVoteDetail, Wage, Accessary, ReceivingForm, Car } = require('../models');
 
+/* `````````````````````````````````` */
+// Put your custom services code below this line
 exports.create = async input => {
     let totalPrice = 0;
     let details = [];
@@ -40,3 +42,4 @@ exports.create = async input => {
 
     return newRepairVotes;
 }
+/* `````````````````````````````````` */

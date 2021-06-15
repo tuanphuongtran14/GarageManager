@@ -1,5 +1,5 @@
 const { Accessary } = require('../models');
-const CRUDController = require('./CRUD.template')(Accessary);
+const {find, findOne, create } = require('../configs/controller.template.config')(Accessary);
 
 /* ````````````Declare your custom controller here `````````````````````*/
 
@@ -7,6 +7,7 @@ const CRUDController = require('./CRUD.template')(Accessary);
 /* `````````````````````````````````````````````````````````````````````*/
 
 module.exports = {
-    ...CRUDController
-    // Include your custom controller here
+    find,
+    findOne,
+    create
 }
