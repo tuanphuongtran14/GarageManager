@@ -34,6 +34,7 @@ function ReceivingForm(props) {
                     });
                     setCarBrands(brandSelectOtions);
                     setSelectedCarBrand(brandSelectOtions[0]);
+                    props.setLoading(false);
                 }
             });
     }, []);
@@ -124,7 +125,6 @@ function ReceivingForm(props) {
         setSelectedCarBrand(selectedOption);
     }
 
-    let inputElement;
 
     // Handle when submit form
     const handleSubmit = (event) => {
@@ -147,13 +147,13 @@ function ReceivingForm(props) {
             carBrand: selectedCarBrand.label
         }
 
-        console.log(formData);
+        props.setLoading(true);
 
         callAPI('POST', '/api/receiving-forms/send', formData)
             .then(res => {
                 if (res && res.status === 201) {
                     window.alert("Đã tiếp nhận xe mang biển số " + licensePlate.value);
-                    inputElement.click();
+                    handleReset();
 
                     callAPI('GET', '/api/cars')
                         .then(res => {
@@ -162,10 +162,11 @@ function ReceivingForm(props) {
                             }
                         });
 
-                        callAPI('GET', '/api/receiving-forms')
+                    callAPI('GET', '/api/receiving-forms')
                         .then(res => {
                             if (res && res.status === 200) {
                                 props.fetchReceivingList(res.data);
+                                props.setLoading(false);
                             }
                         })
                 } else {
@@ -176,7 +177,7 @@ function ReceivingForm(props) {
     }
 
     // Handle when submit form 
-    const handleReset = (event) => {
+    const handleReset = () => {
         const nameInput = document.getElementById('name');
         const phoneNumberInput = document.getElementById('phoneNumber');
         const emailInput = document.getElementById('email');
@@ -188,8 +189,6 @@ function ReceivingForm(props) {
         emailInput.disabled = false;
         addressInput.disabled = false;
     }
-
-
 
     return (
         <div>
@@ -244,7 +243,7 @@ function ReceivingForm(props) {
                 </div>
                 <div className="d-flex justify-content-between mt-4">
                     <button type="submit" className="btn btn-success w-50" onClick={handleSubmit}>Gửi ngay</button>
-                    <button type="reset" ref={input => inputElement = input} className="btn btn-danger" onClick={handleReset}><i className="fas fa-redo"></i> &nbsp; Nhập lại</button>
+                    <button type="reset" className="btn btn-danger" onClick={handleReset}><i className="fas fa-redo"></i> &nbsp; Nhập lại</button>
                 </div>
             </form>
         </div>

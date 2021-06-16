@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import './ReceivingCar.css';
 import ReceivingList from './ReceivingList';
 import ReceivingForm from './ReceivingForm';
@@ -8,6 +8,7 @@ import * as actions from '../../../redux/actions/index'
 
 
 function ReceivingCar(props) {
+    const [loading, setLoading] = useState(true);
     useEffect(() => {
         callAPI('GET', '/api/receiving-forms')
             .then(res => {
@@ -16,13 +17,35 @@ function ReceivingCar(props) {
                 }
             })
     }, []);
+    const callLoading = (value) => {
+        setLoading(value);
+    }
+
+    const displayLoading = () => {
+        if (loading) {
+            return (
+                <div className="container loading">
+                    <div className="spinner-grow text-primary" role="status">
+                        <span className="sr-only">Loading...</span>
+                    </div>
+                    <div className="spinner-grow text-primary" role="status">
+                        <span className="sr-only">Loading...</span>
+                    </div>
+                    <div className="spinner-grow text-primary" role="status">
+                        <span className="sr-only">Loading...</span>
+                    </div>
+                </div>
+            )
+        }
+    }
 
     return (
-        <div className="container">
+        <div className="container parent">
+            {displayLoading()}
             <div className="box-container">
                 <div className="box--col-2">
                     <h5 className="text-center">Tiếp nhận bảo trì xe</h5>
-                    <ReceivingForm />
+                    <ReceivingForm setLoading={callLoading} />
                 </div>
                 <div className="box--col-2">
                     <h5 className="text-center">Danh sách xe đã tiếp nhận trong ngày</h5>

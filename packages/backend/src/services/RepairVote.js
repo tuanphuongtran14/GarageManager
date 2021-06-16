@@ -11,16 +11,21 @@ exports.create = async input => {
     if(!receivingForm)
         throw new Error(`Not exist the receiving form with id ${input.receivingForm}`)
 
+    receivingForm.isRepaired = true;
+    receivingForm.save();
+
     // Create repair vote details
     for(let i = 0; i < input.details.length; i++) {
         let wage = await Wage.findById(input.details[i].wage);
         let accessary = await Accessary.findById(input.details[i].accessary);
+        accessary.remaining -= input.details[i].quantity;
+        accessary.save();
         input.details[i].price = wage.price + accessary.unitPrice * input.details[i].quantity;
 
         let newRepairVoteDetail = new RepairVoteDetail({
             ...input.details[i]
         });
-        await newRepairVoteDetail.save();
+        newRepairVoteDetail.save();
 
         totalPrice += newRepairVoteDetail.price;
         details.push(newRepairVoteDetail._id)
@@ -32,7 +37,7 @@ exports.create = async input => {
 
     let car = await Car.findById(receivingForm.car);
     car.debt += totalPrice;
-    await car.save();
+    car.save();
     
     // Create repair vote base on input
     let newRepairVotes = await new RepairVote({
@@ -41,5 +46,14 @@ exports.create = async input => {
     await newRepairVotes.save();
 
     return newRepairVotes;
+}
+exports.find = () =>{
+    return RepairVote.find({}).populate({
+        path: 'receivingForm',
+        populate: {
+            path: 'car',
+            model: 'Car'
+        }
+    }).populate('details');
 }
 /* `````````````````````````````````` */

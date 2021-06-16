@@ -15,16 +15,14 @@ export default function CreateRepairVotesPage() {
   let carOptions = [];
   let accessaryOptions = [];
   let wageOptions = [];
-  let [selectedAccessary, setSelectedAccessary] = useState();
-  let [selectedWage, setSelectedWage] = useState();
-  let [content, setContent] = useState();
-  let [quantity, setQuantity] = useState(0);
+  let selectedAccessary = null;
+  let selectedWage = null;
+  let content = '';
+  let quantity = 1;
   let [repairVoteDetail, setRepairVoteDetail] = useState([]);
   let [totalPrice, setTotalPrice] = useState(0);
-  let [editIndex, setEditIndex] = useState();
-  let [oldPrice, setOldPrice] = useState(0);
   let accessarySelect, wageSelect, carSelect;
-  let  oldAccessary, oldQuantity = 0;
+  let oldPrice = 0, oldAccessary, oldQuantity = 0, editIndex;
 
   //  Fetch data
   useEffect(() => {
@@ -106,32 +104,33 @@ export default function CreateRepairVotesPage() {
   const handleAccessaryOnChange = (selectedOption) => {
     const quantityInput = document.getElementById('quantity');
     if (selectedOption) {
-      setSelectedAccessary(accessaries.filter(accessary => {
+      selectedAccessary = accessaries.filter(accessary => {
         return accessary._id === selectedOption.value
-      })[0]);
+      })[0];
       quantityInput.removeAttribute('disabled');
     } else {
-      setSelectedAccessary(null);
+      console.log('vao');
+      selectedAccessary = null;
     }
   }
 
   const handleWageOnChange = (selectedOption) => {
     if (selectedOption)
-    setSelectedWage(wages.filter(wage => {
+      selectedWage = wages.filter(wage => {
         return wage._id === selectedOption.value
-      })[0]);
+      })[0];
     else
-    setSelectedWage(null);
+      selectedWage = null;
   }
 
   const handleQuantityOnBlur = (event) => {
     const value = event.target.value;
-    setQuantity(value);
+    quantity = value;
     
     if (value > selectedAccessary.remaining) {
       window.alert('Số lượng vật tư phụ tùng còn lại không đủ');
       document.getElementById('quantity').value = 0;
-      setQuantity(0);
+      quantity = 0;
     }
     if(value <= 0) {
       window.alert('Số lượng vật tư phụ tùng không hợp lệ. Số lượng phụ tùng dùng phải lớn hơn 0!!!');
@@ -140,7 +139,7 @@ export default function CreateRepairVotesPage() {
 
   const handleContentOnChange = (event) => {
     const value = event.target.value;
-    setContent(value);
+    content = value;
   }
 
   const handleAddSubmit = async (event) => {
@@ -148,7 +147,6 @@ export default function CreateRepairVotesPage() {
     const button = document.getElementById('addBtn');
 
     if (button.innerText === 'Thêm') {
-      console.log(!content);
       if (!selectedAccessary || !selectedWage || !content || !quantity) {
         window.alert('Bạn chưa điền đủ thông tin cho form!!!');
         return;
@@ -182,18 +180,13 @@ export default function CreateRepairVotesPage() {
 
       setAccessaries(tmp);
       document.getElementById('content').value = '';
-      setContent('');
+      content = '';
       document.getElementById('quantity').value = 0;
       document.getElementById('quantity').setAttribute('disabled', 'true');
-      setQuantity(0)
+      quantity = 0;
       accessarySelect.select.clearValue();
       wageSelect.select.clearValue();
     } else {
-      console.log(!selectedAccessary);
-      console.log(!selectedWage);
-      console.log(!content);
-      console.log(!quantity);
-
       if (!selectedAccessary || !selectedWage || !content || !quantity) {
         window.alert('Bạn chưa điền đủ thông tin cho form!!!');
         return;
@@ -204,8 +197,7 @@ export default function CreateRepairVotesPage() {
         return;
       }
 
-      let tmpRepairVoteDetail = repairVoteDetail;
-      tmpRepairVoteDetail[editIndex] = {
+      repairVoteDetail[editIndex] = {
         content,
         accessary: selectedAccessary._id,
         accessary_name: selectedAccessary.name,
@@ -216,10 +208,6 @@ export default function CreateRepairVotesPage() {
         wage_price: selectedWage.price,
         price: quantity * selectedAccessary.unitPrice + selectedWage.price
       };
-
-      console.log(tmpRepairVoteDetail);
-
-      setRepairVoteDetail([...tmpRepairVoteDetail]);
 
       let newPrice = totalPrice + repairVoteDetail[editIndex].price - oldPrice;
       setTotalPrice(newPrice);
@@ -234,18 +222,16 @@ export default function CreateRepairVotesPage() {
       setAccessaries(tmp);
 
       document.getElementById('content').value = '';
-      setContent('');
+      content = '';
       document.getElementById('quantity').value = 0;
       document.getElementById('quantity').setAttribute('disabled', 'true');
-      setQuantity(0)
+      quantity = 0;
       accessarySelect.select.clearValue();
       wageSelect.select.clearValue();
 
-      document.querySelectorAll('tbody tr')[editIndex].style.backgroundColor = null;
       button.innerText = 'Thêm';
 
-      setOldPrice(0);
-      setEditIndex(0);
+      oldPrice = 0;
       oldAccessary = null;
       oldQuantity = 0;
     }
@@ -256,28 +242,26 @@ export default function CreateRepairVotesPage() {
     const button = document.getElementById('addBtn');
     button.innerText = 'Sửa';
 
-    const contentInput = document.getElementById('content');
-    const quantityInput = document.getElementById('quantity');
-    contentInput.value = repairVoteDetail[index].content;
-    setContent(repairVoteDetail[index].content);
-    quantityInput.value = 0;
+    const content = document.getElementById('content');
+    const quantity = document.getElementById('quantity');
+    content.value = repairVoteDetail[index].content;
+    quantity.value = 0;
     accessarySelect.select.setValue({value: repairVoteDetail[index].accessary, label: repairVoteDetail[index].accessary_name});
     wageSelect.select.setValue({value: repairVoteDetail[index].wage, label: repairVoteDetail[index].wage_type});
 
-    setOldPrice(repairVoteDetail[index].price);
+    oldPrice = repairVoteDetail[index].price;
     oldAccessary = repairVoteDetail[index].accessary;
     oldQuantity = repairVoteDetail[index].quantity;
-    setEditIndex(index);
-    
-    document.querySelectorAll('tbody tr')[index].style.backgroundColor = 'hsl(0, 0%, 85%)';
+    editIndex = index;
 
-    setSelectedAccessary(accessaries.filter(accessary => {
+    selectedAccessary = accessaries.filter(accessary => {
       return accessary._id === oldAccessary
-    })[0]);
+    })[0];
+    console.log(selectedAccessary);
 
-    setSelectedWage(wages.filter(wage => {
+    selectedWage = wages.filter(wage => {
       return wage._id === repairVoteDetail[index].wage;
-    })[0]);
+    })[0];
           
     let oldTmp = accessaries.map(accessary => {
       if (accessary._id === oldAccessary)
@@ -286,7 +270,6 @@ export default function CreateRepairVotesPage() {
       return { ...accessary };
     })
     setAccessaries(oldTmp);
-
   }
 
   // Set total price when totalprice change
@@ -349,9 +332,9 @@ export default function CreateRepairVotesPage() {
     setTotalPrice(0);
     carSelect.select.clearValue();
     document.getElementById('content').value = '';
-    setContent('');
+    content = '';
     document.getElementById('quantity').value = 1;
-    setQuantity(0);
+    quantity = 1;
     accessarySelect.select.clearValue();
     wageSelect.select.clearValue();
   }

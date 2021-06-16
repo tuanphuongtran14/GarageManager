@@ -54,7 +54,7 @@ function ReceivingList(props) {
         <>
             <div className="receiving-list mt-4 mb-2">
                 <table className="table table--custom">
-                    <thead className="sticky-top bg-dark text-white">
+                    <thead className="sticky-top bg-dark text-white" style={{zIndex: "0"}}>
                         <tr className="border">
                             <th>STT</th>
                             <th>Biển số xe</th>

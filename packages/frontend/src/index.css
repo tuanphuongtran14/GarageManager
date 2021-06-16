@@ -31,3 +31,19 @@ body {
   border-color: hsl(0, 0%, 90%)!important;
   color: hsl(0, 0%, 60%);
 }
+
+.parent {
+  position: relative;
+}
+.loading {
+  height: 100%;
+  background-color: #fff;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+}
+
