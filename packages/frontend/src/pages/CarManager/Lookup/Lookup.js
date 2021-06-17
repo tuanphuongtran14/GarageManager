@@ -1,129 +1,145 @@
-import React, { useEffect } from 'react';
-import './Lookup.css'
+import React, { useEffect, useState } from 'react';
+import './Lookup.css';
 import Select from 'react-select';
+import callAPI from '../../../utils/apiCaller';
+import { set } from 'lodash';
 
 export default function Lookup() {
+  const [loading, setLoading] = useState(true);
+  const [resultLoading, setResultLoading] = useState(false);
+  const [cars, setCars] = useState([]);
+
   useEffect(() => {
-    let selectSeparators = document.querySelectorAll('.css-1okebmr-indicatorSeparator');
-    for(let i = 0; i < selectSeparators.length; i++) {
-      selectSeparators[i].remove();
-    }
+    callAPI('GET', '/api/cars')
+      .then(res => {
+        if (res && res.status === 200) {
+          setCars(res.data);
+          setLoading(false);
+        }
+      });
+  }, []);
+
+  const handleSubmit = event => {
+    event.preventDefault();
+    const carInput = document.getElementById('car');
+    const customerInput = document.getElementById('customer');
+    const phoneNumberInput = document.getElementById('phoneNumber');
+    setResultLoading(true);
+
+    callAPI('POST', '/api/cars/search', {
+      car: carInput.value,
+      customer: customerInput.value,
+      phoneNumber: phoneNumberInput.value
+    })
+      .then(res => {
+        if (res && res.status === 200) {
+          setCars(res.data);
+          setResultLoading(false);
+        }
+      });
+  }
+
+  console.log('render');
+  const resultTable = cars.map((row, index) => {
+    return (
+      <tr key={ index }>
+        <td>{String(index + 1).padStart(3, '0')}</td>
+        <td>{row.licensePlate}</td>
+        <td>{row.carBrand.name}</td>
+        <td>{row.carOwner.name}</td>
+        <td>{row.carOwner.phoneNumber}</td>
+        <td>{row.debt}</td>
+      </tr>
+    )
   })
 
-  const customerSelectOtions = [
-    { value: 'Nguyễn Văn A', label: 'Nguyễn Văn A' },
-    { value: 'Vỏ lớp xe', label: 'Vỏ lớp xe' },
-    { value: 'Phanh trước', label: 'Phanh trước' },
-  ];
-
-  const carSelectOtions = [
-    { value: '81G-12345', label: '81G-12345' },
-    { value: 'Vỏ lớp xe', label: 'Vỏ lớp xe' },
-    { value: 'Phanh trước', label: 'Phanh trước' },
-  ];
-
-  const phoneNumberSelectOtions = [
-    { value: '0123123414', label: '0123123414' },
-    { value: 'Vỏ lớp xe', label: 'Vỏ lớp xe' },
-    { value: 'Phanh trước', label: 'Phanh trước' },
-  ];
-
-    return (
-        <div className="container">
-        <div className="box">
-          <h4 className="text-center mb-4">Tra cứu xe</h4>
-          <form action method="post">
-            <div className="row px-0">
-              <div className="col-12 col-lg">
-                <div className="form-group">
-                  <label htmlFor>Biển số</label>
-                  <Select defaultValue={carSelectOtions[0]} options={carSelectOtions}/>
-                </div>
-              </div>
-              <div className="col-12 col-lg">
-                <div className="form-group">
-                  <label htmlFor>Chủ xe</label>
-                  <Select defaultValue={customerSelectOtions[0]} options={customerSelectOtions}/>
-
-                </div>
-              </div>
-              <div className="col-12 col-lg">
-                <div className="form-group">
-                  <label htmlFor>Số điện thoại</label>
-                  <Select defaultValue={phoneNumberSelectOtions[0]} options={phoneNumberSelectOtions}/>
-                </div>
-              </div>
-              <div className="col-12 col-lg-1">
-                <label className="invisible" htmlFor>Thao tác</label>
-                <button type="submit" className="btn btn-primary d-block">Tìm</button>
-              </div>
-            </div>
-            <div className="result-list my-3">
-              <table className="table table--custom border-bottom">
-                <thead className="thead-dark sticky-top"  style={{zIndex: 0}}>
-                  <tr>
-                    <th>STT</th>
-                    <th>Biển số</th>
-                    <th>Hiệu xe</th>
-                    <th>Chủ xe</th>
-                    <th>Tiền nợ</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>1</td>
-                    <td>81G-12345</td>
-                    <td>Toyota</td>
-                    <td>Nguyễn Văn A</td>
-                    <td>700.000đ</td>
-                  </tr>
-                  <tr>
-                    <td>1</td>
-                    <td>81G-12345</td>
-                    <td>Toyota</td>
-                    <td>Nguyễn Văn A</td>
-                    <td>700.000đ</td>
-                  </tr>
-                  <tr>
-                    <td>1</td>
-                    <td>81G-12345</td>
-                    <td>Toyota</td>
-                    <td>Nguyễn Văn A</td>
-                    <td>700.000đ</td>
-                  </tr>
-                  <tr>
-                    <td>1</td>
-                    <td>81G-12345</td>
-                    <td>Toyota</td>
-                    <td>Nguyễn Văn A</td>
-                    <td>700.000đ</td>
-                  </tr>
-                  <tr>
-                    <td>1</td>
-                    <td>81G-12345</td>
-                    <td>Toyota</td>
-                    <td>Nguyễn Văn A</td>
-                    <td>700.000đ</td>
-                  </tr>
-                  <tr>
-                    <td>1</td>
-                    <td>81G-12345</td>
-                    <td>Toyota</td>
-                    <td>Nguyễn Văn A</td>
-                    <td>700.000đ</td>
-                  </tr>
-                  <tr>
-                    <td>1</td>
-                    <td>81G-12345</td>
-                    <td>Toyota</td>
-                    <td>Nguyễn Văn A</td>
-                    <td>700.000đ</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </form>
+  const displayLoading = () => {
+    if (loading) {
+      return (
+        <div className="container loading"  style={{ zIndex: 1 }}>
+          <div className="spinner-grow text-primary" role="status">
+            <span className="sr-only">Loading...</span>
+          </div>
+          <div className="spinner-grow text-primary" role="status">
+            <span className="sr-only">Loading...</span>
+          </div>
+          <div className="spinner-grow text-primary" role="status">
+            <span className="sr-only">Loading...</span>
+          </div>
         </div>
+      )
+    }
+  };
+
+  const displayResultLoading = () => {
+    if (resultLoading) {
+      return (
+        <tr className="container loading">
+          <div className="spinner-grow text-primary" role="status">
+            <span className="sr-only">Loading...</span>
+          </div>
+          <div className="spinner-grow text-primary" role="status">
+            <span className="sr-only">Loading...</span>
+          </div>
+          <div className="spinner-grow text-primary" role="status">
+            <span className="sr-only">Loading...</span>
+          </div>
+        </tr>
+      )
+    }
+  };
+
+  return (
+    <div className="container parent">
+      {displayLoading()}
+      <div className="box">
+        <h4 className="text-center">Tra cứu xe</h4>
+        <p className="text-center mb-4 font-italic">(Điền vào một hoặc một số thông tin bên dưới để tiến hành tra cứu)</p>
+        <form>
+          <div className="row px-0">
+            <div className="col-12 col-lg">
+              <div className="form-group">
+                <label >Biển số</label>
+                <input type="text" id="car" placeholder="Ví dụ: 51G-12345" className="form-control" aria-describedby="helpId" />
+              </div>
+            </div>
+            <div className="col-12 col-lg">
+              <div className="form-group">
+                <label><span className="text-secondary mr-2"><small>hoặc</small></span>Tên chủ xe</label>
+                <input type="text" id="customer" placeholder="Ví dụ: Nguyễn Văn A" className="form-control" aria-describedby="helpId" />
+              </div>
+            </div>
+            <div className="col-12 col-lg">
+              <div className="form-group">
+                <label><span className="text-secondary mr-2"><small>hoặc</small></span>Số điện thoại</label>
+                <input type="text" id="phoneNumber" placeholder="Ví dụ: 0396042356" className="form-control" aria-describedby="helpId" />
+              </div>
+            </div>
+            <div className="col-12 col-lg-2 text-center">
+            <label className="invisible d-block">Thao tác</label>
+              <button type="submit" className="btn btn-primary w-75" onClick={handleSubmit}>Tìm ngay</button>
+            </div>
+          </div>
+          <div className="result-list my-3">
+            <table className="table table--custom">
+              <thead className="thead-dark sticky-top" style={{ zIndex: 0.5 }}>
+                <tr>
+                  <th>STT</th>
+                  <th>Biển số</th>
+                  <th>Hiệu xe</th>
+                  <th>Chủ xe</th>
+                  <th>Số điện thoại</th>
+                  <th>Tiền nợ</th>
+                </tr>
+              </thead>
+              <tbody className="parent" >
+                {displayResultLoading()}
+                {resultTable}
+              </tbody>
+            </table>
+          </div>
+        </form>
       </div>
-    )
+    </div>
+  )
 }

@@ -412,6 +412,7 @@ export default function CreateRepairVotesPage() {
       )
     }
   };
+  
   return (
     <div className="container parent">
       {displayLoading()}

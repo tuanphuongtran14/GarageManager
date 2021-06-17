@@ -96,15 +96,12 @@ function ReceivingForm(props) {
 
                 // Set value customer phone
                 phoneNumberInput.value = cars[i].carOwner.phoneNumber;
-                phoneNumberInput.disabled = true;
 
                 // Set value customer email
                 emailInput.value = cars[i].carOwner.email;
-                emailInput.disabled = true;
 
                 // Set value customer address
                 addressInput.value = cars[i].carOwner.address;
-                addressInput.disabled = true;
 
                 return
             }
@@ -112,11 +109,8 @@ function ReceivingForm(props) {
         nameInput.disabled = false;
         nameInput.value = '';
         setDisableCarBrandSelect(false);
-        phoneNumberInput.disabled = false;
         phoneNumberInput.value = '';
-        emailInput.disabled = false;
         emailInput.value = '';
-        addressInput.disabled = false;
         addressInput.value = ''
     }
 
@@ -179,15 +173,9 @@ function ReceivingForm(props) {
     // Handle when submit form 
     const handleReset = () => {
         const nameInput = document.getElementById('name');
-        const phoneNumberInput = document.getElementById('phoneNumber');
-        const emailInput = document.getElementById('email');
-        const addressInput = document.getElementById('address');
 
         nameInput.disabled = false;
         setDisableCarBrandSelect(false);
-        phoneNumberInput.disabled = false;
-        emailInput.disabled = false;
-        addressInput.disabled = false;
     }
 
     return (
