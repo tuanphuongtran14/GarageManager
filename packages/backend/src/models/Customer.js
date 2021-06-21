@@ -2,7 +2,7 @@ exports.initCustomer = function(mongoose) {
     const Schema = mongoose.Schema;
 
     // Create Customer Schema
-    const customerSchema = new Schema({
+    const CustomerSchema = new Schema({
         name: String,
         phoneNumber: String,
         address: String,
@@ -10,7 +10,7 @@ exports.initCustomer = function(mongoose) {
     });
 
     // Create Customer Model
-    const Customer = mongoose.model('Customer', customerSchema);
+    const Customer = mongoose.model('Customer', CustomerSchema);
 
     return Customer;
 }
