@@ -1,15 +1,15 @@
-exports.initAccessary = function(mongoose) {
+exports.initAccessory = function(mongoose) {
     const Schema = mongoose.Schema;
 
     // Create Accessary Schema
-    const accessarySchema = new Schema({
+    const AccessorySchema = new Schema({
         name: String,
         unitPrice: Number,
         remaining: Number
     })
 
     // Create Accessary Model
-    const Accessary = mongoose.model('Accessary', accessarySchema);
+    const Accessory = mongoose.model('Accessory', AccessorySchema);
 
-    return Accessary;
+    return Accessory;
 }

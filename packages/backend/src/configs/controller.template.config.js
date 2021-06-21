@@ -3,7 +3,7 @@ module.exports = function(Model) {
     return {
         create: async (req, res) => {
             let input = req.body;
-
+            
             // If input is null, return 400 Error
             if(!input) {
                 return res.status(400).json({

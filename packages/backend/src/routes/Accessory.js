@@ -1,14 +1,14 @@
 var express = require('express');
 var router = express.Router();
-const { find, create, findOne } = require('../controllers/Accessary');
+const { find, create, findOne } = require('../controllers/Accessory');
 
-/* GET find accessaries list */
+/* GET find accessories list */
 router.get('/:id', findOne);
 
-/* GET find accessaries list */
+/* GET find accessories list */
 router.get('/', find);
 
-/* POST create new accessary */
+/* POST create new accessory */
 router.post('/', create);
 
 

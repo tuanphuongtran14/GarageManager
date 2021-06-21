@@ -4,13 +4,12 @@ module.exports = function(Model) {
             let newDocument = new Model({
                 ...input
             });
-        
             return newDocument.save();
         },
-        find: () =>{
+        find: () => {
             return Model.find({});
         },
-        findOne: (Id) =>{
+        findOne: (Id) => {
             return Model.findById(Id);
         }
     }
