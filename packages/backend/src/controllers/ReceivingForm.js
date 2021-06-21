@@ -4,12 +4,7 @@ const ReceivingFormService = require('../services/ReceivingForm');
 
 /* ````````````Declare your custom controller here `````````````````````*/
 const send = async (req, res) => {
-    /* let formInput = req.body; */
-    let formInput = {
-        name: 'Nguyen Huu Phat',
-        
-    }
-
+    let formInput = req.body;
 
     // If input is null, return 400 Error
     if (!formInput) {
