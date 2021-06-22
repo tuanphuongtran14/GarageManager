@@ -3,9 +3,9 @@ exports.initAccessoryImportForm = function(mongoose) {
 
     // Create Accessory Schema
     const AccessoryImportFormSchema = new Schema({
-        number: Number,
+        amount: Number,
         date: { type: Date, default: Date.now},
-        accessory: { type: Schema.Types.ObjectId, ref: 'Accessory'}
+        accessoryId: { type: Schema.Types.ObjectId, ref: 'Accessory'}
     })
 
     // Create Accessory Model

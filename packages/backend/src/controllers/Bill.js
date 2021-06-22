@@ -14,6 +14,13 @@ const create = async (req, res) => {
         });
     }
 
+    if(input.amount <= 0) {
+        return res.status(400).json({
+            statusCode: 400,
+            message: 'Value of bill is 0'
+        });
+    }
+
     let car = await Car.findById(input.carId);
     // Update mail for carOwner and set debt of car to 0
     await Customer.updateOne({ _id: car.carOwner }, { email: input.email });

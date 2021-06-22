@@ -8,6 +8,7 @@ const CustomerRouter = require('./Customer');
 const AccountRouter = require('./Account');
 const ParameterRouter = require('./Parameter');
 const BillRouter = require('./Bill');
+const AccessoryImportFormRouter = require('./AccessoryImportForm')
 
 module.exports = function(app) {
   app.use('/api/car-brands', CarBrandRouter);
@@ -20,4 +21,5 @@ module.exports = function(app) {
   app.use('/api/accounts', AccountRouter);
   app.use('/api/parameters', ParameterRouter);
   app.use('/api/bills', BillRouter);
+  app.use('/api/accessory-import-forms', AccessoryImportFormRouter);
 }
