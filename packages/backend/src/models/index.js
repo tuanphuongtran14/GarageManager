@@ -38,8 +38,8 @@ db.Bill = initBill(mongoose);
 db.Sale = initSale(mongoose);
 db.SaleDetail = initSaleDetail(mongoose);
 db.Account = initAccount(mongoose);
-db.initInventoryReport = initInventoryReport(mongoose);
-db.initInventoryReportDetail = initInventoryReportDetail(mongoose);
-db.initParameter = initParameter(mongoose);
+db.InventoryReport = initInventoryReport(mongoose);
+db.InventoryReportDetail = initInventoryReportDetail(mongoose);
+db.Parameter = initParameter(mongoose);
 
 module.exports = db;

@@ -5,6 +5,8 @@ const ReceivingFormRouter = require('./ReceivingForm');
 const WageRouter = require('./Wage');
 const RepairVoteRouter = require('./RepairVote');
 const CustomerRouter = require('./Customer');
+const AccountRouter = require('./Account');
+const ParameterRouter = require('./Parameter')
 
 module.exports = function(app) {
   app.use('/api/car-brands', CarBrandRouter);
@@ -14,4 +16,6 @@ module.exports = function(app) {
   app.use('/api/wages', WageRouter);
   app.use('/api/repair-votes', RepairVoteRouter)
   app.use('/api/customers', CustomerRouter)
+  app.use('/api/accounts', AccountRouter)
+  app.use('/api/parameters', ParameterRouter)
 }
