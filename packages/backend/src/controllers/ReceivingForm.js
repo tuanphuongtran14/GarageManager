@@ -48,10 +48,24 @@ const find = async (req, res) => {
         });
     }
 }
+
+const findOne = async (req, res) => {
+    try {
+        let id = req.params.id;
+        let objList = await ReceivingFormService.findOne(id);
+        return res.status(200).json(objList);
+    } catch (err) {
+        return res.status(500).json({
+            statusCode: 500,
+            message: err.message || `Some errors occur while finding receiving forms list`
+        });
+    }
+}
 /* `````````````````````````````````````````````````````````````````````*/
 
 module.exports = {
     find,
+    findOne,
     create,
 }
 

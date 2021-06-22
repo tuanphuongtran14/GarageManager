@@ -71,10 +71,16 @@ exports.find = () => {
 exports.findOne = (id) => {
     return ReceivingForm.findOne({ _id: id }).populate({ 
         path: 'car',
-        populate: {
-          path: 'carOwner',
-          model: 'Customer'
-        } 
+        populate: [
+            {
+            path: 'carOwner',
+            model: 'Customer'
+            },
+            {
+                path: 'carBrand',
+                model: 'CarBrand'
+            }
+        ]
      });
 }
 /* `````````````````````````````````` */

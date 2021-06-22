@@ -6,7 +6,7 @@ const { create, find, findOne } = require('../controllers/ReceivingForm');
 router.post('/', create);
 
 /* GET find cars list */
-/* router.get('/:id', findOne); */
+router.get('/:id', findOne);
 
 /* GET find cars list */
 router.get('/', find);
