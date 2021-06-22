@@ -5,7 +5,7 @@ exports.initSaleDetail = function(mongoose) {
     const SaleDetailSchema = new Schema({
         carBrand: { type: Schema.Types.ObjectId, ref: 'CarBrand' },
         numberOfRepairs: { type: Number, default: 0 },
-        ratio: { type: mongoose.Types.Decimal128 },
+        ratio: { type: Number },
         totalSale: { type: Number, default: 0 },
         sale: { type: Schema.Types.ObjectId, ref: 'Sale' }
     });

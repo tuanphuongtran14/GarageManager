@@ -5,7 +5,7 @@ const { Sale } = require('../models');
 exports.create = async input => {
     
     
-    // Create repair vote base on input
+    // Create sale base on input
     let newSale = await new Sale({
         ...input
     });
