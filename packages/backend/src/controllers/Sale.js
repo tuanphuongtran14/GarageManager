@@ -83,18 +83,10 @@ const create = async (req, res) => {
             });
     }
     await Sale.updateOne({ _id: saleId }, input);
-    res.send('Receive your form successfully');
 
-    // Create new sale 
-    /* try {
-        let Sale = await SaleService.create(input);
-        return res.status(201).json(Sale);
-    } catch (err) {
-        return res.status(500).json({
-            statusCode: 500,
-            message: err.message || 'Some errors occur while creating new repair vote'
-        });
-    } */
+    // Return api
+    let saleReport = await SaleService.findOne(saleId);
+    res.status(200).json(saleReport);
 }
 
 const find = async (req, res) => {
