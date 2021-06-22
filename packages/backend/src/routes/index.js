@@ -10,7 +10,7 @@ module.exports = function(app) {
   app.use('/api/car-brands', CarBrandRouter);
   app.use('/api/cars', CarRouter);
   app.use('/api/receiving-forms', ReceivingFormRouter);
-  app.use('/api/accessaries', AccessoryRouter);
+  app.use('/api/accessories', AccessoryRouter);
   app.use('/api/wages', WageRouter);
   app.use('/api/repair-votes', RepairVoteRouter)
   app.use('/api/customers', CustomerRouter)
