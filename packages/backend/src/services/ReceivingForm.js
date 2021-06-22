@@ -2,19 +2,18 @@ const { Customer, Car, CarBrand, ReceivingForm } = require('../models');
 
 /* `````````````````````````````````` */
 // Put your custom services code below this line
-exports.sendForm = async formInput => {
+exports.create = async formInput => {
     // If phone number has already existed, find its owner
     let customer = await Customer.findOne({
         phoneNumber: formInput.phoneNumber
     });
 
     // If phone number has not existed, create new customer
-    if(!customer) {
+    if (!customer) {
         customer = await new Customer({
             name: formInput.name,
             phoneNumber: formInput.phoneNumber,
             address: formInput.address,
-            email: formInput.email
         }).save();
     }
 
@@ -25,7 +24,7 @@ exports.sendForm = async formInput => {
 
 
     // If car has not existed, create new car
-    if(!car) {
+    if (!car) {
         let carBrand = await CarBrand.findOne({
             name: formInput.carBrand
         });
@@ -34,21 +33,18 @@ exports.sendForm = async formInput => {
             licensePlate: formInput.licensePlate,
             carOwner: customer._id,
             carBrand: carBrand._id,
-            debt: 0,
-            isRepaired: false
         }).save();
 
     } else {
-        if(car.carOwner.toString() !== customer._id.toString()) {
-            throw new Error(`Custom is not car owner`);
+        if (car.carOwner.toString() !== customer._id.toString()) {
+            throw new Error(`Customer is not car owner`);
         }
     }
  
     // Create new receiving form
     let receivingForm = await new ReceivingForm({
         car: car._id,
-        receivingDate: new Date(formInput.receivingDate),
-        isRepaired: false
+        /* receivingDate: new Date(formInput.receivingDate), */
     });
 
     await receivingForm.save();
@@ -56,8 +52,24 @@ exports.sendForm = async formInput => {
     return receivingForm;
 }
 
-exports.find = () =>{
+exports.find = () => {
     return ReceivingForm.find({}).populate({ 
+        path: 'car',
+        populate: [
+            {
+            path: 'carOwner',
+            model: 'Customer'
+            },
+            {
+                path: 'carBrand',
+                model: 'CarBrand'
+            }
+        ]
+     });
+}
+
+exports.findOne = (id) => {
+    return ReceivingForm.findOne({ _id: id }).populate({ 
         path: 'car',
         populate: {
           path: 'carOwner',

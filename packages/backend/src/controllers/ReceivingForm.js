@@ -1,9 +1,8 @@
-const { ReceivingForm } = require('../models');
-const { findOne, create } = require('../configs/controller.template.config')(ReceivingForm);
+const { ReceivingForm, Car } = require('../models');
 const ReceivingFormService = require('../services/ReceivingForm');
 
 /* ````````````Declare your custom controller here `````````````````````*/
-const send = async (req, res) => {
+const create = async (req, res) => {
     let formInput = req.body;
 
     // If input is null, return 400 Error
@@ -12,30 +11,25 @@ const send = async (req, res) => {
             statusCode: 400,
             message: 'Your input is null/empty'
         });
-    } else {
-        const receivingForm = await ReceivingForm.findOne({
-            licensePlate: formInput.licensePlate,
-            isRepaired: false
+    }
+
+    // Check car is in garage or not
+    const car = await Car.findOne({ licensePlate: formInput.licensePlate });
+    if (car && car.status === true) {
+        return res.status(400).json({
+            statusCode: 400,
+            message: 'Car is already in garage'
         })
-
-        console.log(receivingForm);
-
-        if (receivingForm !== null)
-            return res.status(400).json({
-                statusCode: 400,
-                message: 'That car has already received'
-            });
     }
 
     // If input is not null
     try {
-        await ReceivingFormService.sendForm(formInput);
+        await ReceivingFormService.create(formInput);
         return res.status(201).json({
             statusCode: 201,
             message: 'Receiving your form succesfully'
         });
     } catch (err) {
-        console.log(err);
         return res.status(500).json({
             statusCode: 500,
             message: err.message || 'Some errors occur while receiving your form'
@@ -58,8 +52,6 @@ const find = async (req, res) => {
 
 module.exports = {
     find,
-    findOne,
     create,
-    send
 }
 
