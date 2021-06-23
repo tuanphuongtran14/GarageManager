@@ -1,5 +1,5 @@
-const { RepairVote } = require('../models');
-const RepairVoteServices = require('../services/RepairVote');
+const { Bill, Car, Customer } = require('../models');
+const BillService = require('../services/Bill');
 
 /* ````````````Declare your custom controller here `````````````````````*/
 
@@ -14,10 +14,32 @@ const create = async (req, res) => {
         });
     }
 
+    if(input.amount <= 0) {
+        return res.status(400).json({
+            statusCode: 400,
+            message: 'Value of bill is 0'
+        });
+    }
+
+    let car = await Car.findById(input.carId);
+    // Update mail for carOwner and set debt of car to 0
+    await Customer.updateOne({ _id: car.carOwner }, { email: input.email });
+    let remainingDebt = car.debt - parseInt(input.amount);
+    // check if moneyPaid is larger than debt of car
+    if (remainingDebt < 0) {
+      return res.status(400).json({
+          statusCode: 400,
+          message: 'Customer paid more than debt of car'
+      })  
+    }
+    await Car.updateOne({ _id: input.carId}, { debt: remainingDebt });
+    input.car = car._id;
+    delete input['email'];
+    
     // If input is not null, create new car brand
     try {
-        let RepairVote = await RepairVoteServices.create(input);
-        return res.status(201).json(RepairVote);
+        let Bill = await BillService.create(input);
+        return res.status(201).json(Bill);
     } catch (err) {
         return res.status(500).json({
             statusCode: 500,
@@ -28,7 +50,7 @@ const create = async (req, res) => {
 
 const find = async (req, res) => {
     try { 
-        let objList = await RepairVoteServices.find();
+        let objList = await BillService.find();
         return res.status(200).json(objList);
     } catch(err) {
         return res.status(500).json({
@@ -41,7 +63,7 @@ const find = async (req, res) => {
 const findOne = async (req, res) => {
     try {
         const id = req.params.id
-        let objList = await RepairVoteServices.findOne(id);
+        let objList = await BillService.findOne(id);
         return res.status(200).json(objList);
     } catch(err) {
         return res.status(500).json({

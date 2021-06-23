@@ -2,14 +2,13 @@ exports.initReceivingForm = function(mongoose) {
     const Schema = mongoose.Schema;
 
     // Create Receving Form Schema
-    const receivingFormSchema = new Schema({
+    const ReceivingFormSchema = new Schema({
         car: { type: Schema.Types.ObjectId, ref: 'Car' },
-        receivingDate: Date,
-        isRepaired: {type: Boolean, default: false}
+        receivingDate: { type: Date, default: Date.now },
     });
 
     // Create Receving Form Model
-    const ReceivingForm = mongoose.model('ReceivingForm', receivingFormSchema);
+    const ReceivingForm = mongoose.model('ReceivingForm', ReceivingFormSchema);
 
     return ReceivingForm;
 }

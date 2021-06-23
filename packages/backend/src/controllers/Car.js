@@ -6,7 +6,6 @@ const { findOne, create } = require('../configs/controller.template.config')(Car
 
 const search = async (req, res) => {
     let input = req.body;
-    console.log(req.body)
 
     try {
         let car = await CarServices.search(input);

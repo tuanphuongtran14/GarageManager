@@ -1,5 +1,5 @@
-const { ReceivingForm, Car } = require('../models');
-const ReceivingFormService = require('../services/ReceivingForm');
+const { AccessoryImportForm, Car } = require('../models');
+const AccessoryImportFormFormService = require('../services/AccessoryImportForm');
 
 /* ````````````Declare your custom controller here `````````````````````*/
 const create = async (req, res) => {
@@ -13,18 +13,16 @@ const create = async (req, res) => {
         });
     }
 
-    // Check car is in garage or not
-    const car = await Car.findOne({ licensePlate: formInput.licensePlate });
-    if (car && car.status === true) {
+    if (formInput.amount <= 0){
         return res.status(400).json({
             statusCode: 400,
-            message: 'Car is already in garage'
-        })
+            message: 'Number of accessories must be greater than zero'
+        });
     }
 
     // If input is not null
     try {
-        await ReceivingFormService.create(formInput);
+        await AccessoryImportFormFormService.create(formInput);
         return res.status(201).json({
             statusCode: 201,
             message: 'Receiving your form succesfully'
@@ -39,7 +37,7 @@ const create = async (req, res) => {
 
 const find = async (req, res) => {
     try {
-        let objList = await ReceivingFormService.find();
+        let objList = await AccessoryImportFormFormService.find();
         return res.status(200).json(objList);
     } catch (err) {
         return res.status(500).json({
@@ -52,7 +50,7 @@ const find = async (req, res) => {
 const findOne = async (req, res) => {
     try {
         let id = req.params.id;
-        let objList = await ReceivingFormService.findOne(id);
+        let objList = await AccessoryImportFormFormService.findOne(id);
         return res.status(200).json(objList);
     } catch (err) {
         return res.status(500).json({

@@ -2,16 +2,17 @@ exports.initRepairVoteDetail = function(mongoose) {
     const Schema = mongoose.Schema;
 
     // Create Repair Vote Detail Schema
-    const repairVoteDetailSchema = new Schema({
+    const RepairVoteDetailSchema = new Schema({
         content: String,
-        accessary: { type: Schema.Types.ObjectId, ref: 'Accessary' },
+        accessory: { type: Schema.Types.ObjectId, ref: 'Accessory' },
         quantity: Number,
         wage: { type: Schema.Types.ObjectId, ref: 'Wage' },
-        price: Number
+        price: Number,
+        repairVote: { type: Schema.Types.ObjectId, ref: 'RepairVote'}
     });
 
     // Create Repair Vote Detail Model
-    const RepairVoteDetail = mongoose.model('RepairVoteDetail', repairVoteDetailSchema);
+    const RepairVoteDetail = mongoose.model('RepairVoteDetail', RepairVoteDetailSchema);
 
     return RepairVoteDetail;
 }
