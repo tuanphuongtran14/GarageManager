@@ -5,7 +5,7 @@ exports.initAccount = function(mongoose) {
     const AccountSchema = new Schema({
         name: String,
         hashedPassword: String,
-        permission: String,
+        role: { type: String, default: 'Staff' },
     });
 
     // Create Account Model
