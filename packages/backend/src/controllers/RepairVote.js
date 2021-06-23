@@ -6,6 +6,7 @@ const RepairVoteServices = require('../services/RepairVote');
 const create = async (req, res) => {
     let input = req.body;
 
+    console.log(input);
     // If input is null, return 400 Error
     if(!input) {
         return res.status(400).json({
@@ -19,6 +20,7 @@ const create = async (req, res) => {
         let RepairVote = await RepairVoteServices.create(input);
         return res.status(201).json(RepairVote);
     } catch (err) {
+        console.log(err);
         return res.status(500).json({
             statusCode: 500,
             message: err.message || 'Some errors occur while creating new repair vote'

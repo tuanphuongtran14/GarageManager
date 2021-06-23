@@ -9,13 +9,13 @@ export default function CreateRepairVotesPage() {
   const [receivingDate, setReceivingDate] = useState();
   const [loading, setLoading] = useState(true);
   const [receivingForms, setReceivingForms] = useState([]);
-  const [accessaries, setAccessaries] = useState([]);
+  const [accessories, setAccessories] = useState([]);
   const [wages, setWages] = useState([]);
   const [selectedCar, setSelectedCar] = useState();
   let carOptions = [];
-  let accessaryOptions = [];
+  let accessoryOptions = [];
   let wageOptions = [];
-  let [selectedAccessary, setSelectedAccessary] = useState();
+  let [selectedAccessory, setSelectedAccessory] = useState();
   let [selectedWage, setSelectedWage] = useState();
   let [content, setContent] = useState();
   let [quantity, setQuantity] = useState(0);
@@ -23,8 +23,8 @@ export default function CreateRepairVotesPage() {
   let [totalPrice, setTotalPrice] = useState(0);
   let [editIndex, setEditIndex] = useState();
   let [oldPrice, setOldPrice] = useState(0);
-  let accessarySelect, wageSelect, carSelect;
-  let  oldAccessary, oldQuantity = 0;
+  let accessorySelect, wageSelect, carSelect;
+  let oldAccessory, oldQuantity = 0;
 
   //  Fetch data
   useEffect(() => {
@@ -38,10 +38,10 @@ export default function CreateRepairVotesPage() {
         setLoading(false);
       });
 
-    callAPI('GET', '/api/accessaries')
+    callAPI('GET', '/api/accessories')
       .then(res => {
         if (res && res.status === 200) {
-          setAccessaries(res.data);
+          setAccessories(res.data);
         }
       });
 
@@ -62,11 +62,11 @@ export default function CreateRepairVotesPage() {
     };
   });
 
-  // create options for accessary select
-  accessaryOptions = accessaries.map(accessary => {
+  // create options for accessory select
+  accessoryOptions = accessories.map(accessory => {
     return {
-      value: accessary._id,
-      label: `${accessary.name} - ${accessary.unitPrice.toLocaleString('de-DE')}đ - SL còn: ${accessary.remaining}`
+      value: accessory._id,
+      label: `${accessory.name} - ${accessory.unitPrice.toLocaleString('de-DE')}đ - SL còn: ${accessory.remaining}`
     };
   });
 
@@ -103,37 +103,37 @@ export default function CreateRepairVotesPage() {
       setSelectedCar(null);
   }
 
-  const handleAccessaryOnChange = (selectedOption) => {
+  const handleAccessoryOnChange = (selectedOption) => {
     const quantityInput = document.getElementById('quantity');
     if (selectedOption) {
-      setSelectedAccessary(accessaries.filter(accessary => {
-        return accessary._id === selectedOption.value
+      setSelectedAccessory(accessories.filter(accessory => {
+        return accessory._id === selectedOption.value
       })[0]);
       quantityInput.removeAttribute('disabled');
     } else {
-      setSelectedAccessary(null);
+      setSelectedAccessory(null);
     }
   }
 
   const handleWageOnChange = (selectedOption) => {
     if (selectedOption)
-    setSelectedWage(wages.filter(wage => {
+      setSelectedWage(wages.filter(wage => {
         return wage._id === selectedOption.value
       })[0]);
     else
-    setSelectedWage(null);
+      setSelectedWage(null);
   }
 
   const handleQuantityOnBlur = (event) => {
     const value = event.target.value;
     setQuantity(value);
-    
-    if (value > selectedAccessary.remaining) {
+
+    if (value > selectedAccessory.remaining) {
       window.alert('Số lượng vật tư phụ tùng còn lại không đủ');
       document.getElementById('quantity').value = 0;
       setQuantity(0);
     }
-    if(value <= 0) {
+    if (value <= 0) {
       window.alert('Số lượng vật tư phụ tùng không hợp lệ. Số lượng phụ tùng dùng phải lớn hơn 0!!!');
     }
   }
@@ -149,57 +149,57 @@ export default function CreateRepairVotesPage() {
 
     if (button.innerText === 'Thêm') {
       console.log(!content);
-      if (!selectedAccessary || !selectedWage || !content || !quantity) {
+      if (!selectedAccessory || !selectedWage || !content || !quantity) {
         window.alert('Bạn chưa điền đủ thông tin cho form!!!');
         return;
       }
 
-      if(document.getElementById('quantity').value <= 0) {
+      if (document.getElementById('quantity').value <= 0) {
         window.alert('Số lượng vật tư phụ tùng không hợp lệ. Số lượng phụ tùng dùng phải lớn hơn 0!!!');
         return;
       }
 
       let newDetail = {
         content,
-        accessary: selectedAccessary._id,
-        accessary_name: selectedAccessary.name,
-        accessary_unitPrice: selectedAccessary.unitPrice,
+        accessory: selectedAccessory._id,
+        accessory_name: selectedAccessory.name,
+        accessory_unitPrice: selectedAccessory.unitPrice,
         quantity: document.getElementById('quantity').value,
         wage: selectedWage._id,
         wage_type: selectedWage.name,
         wage_price: selectedWage.price,
-        price: quantity * selectedAccessary.unitPrice + selectedWage.price
+        price: quantity * selectedAccessory.unitPrice + selectedWage.price
       }
       setRepairVoteDetail([...repairVoteDetail, newDetail]);
       setTotalPrice(totalPrice + newDetail.price);
 
-      let tmp = accessaries.map(accessary => {
-        if (accessary._id === newDetail.accessary)
-          accessary.remaining -= newDetail.quantity;
+      let tmp = accessories.map(accessory => {
+        if (accessory._id === newDetail.accessory)
+          accessory.remaining -= newDetail.quantity;
 
-        return { ...accessary };
+        return { ...accessory };
       })
 
-      setAccessaries(tmp);
+      setAccessories(tmp);
       document.getElementById('content').value = '';
       setContent('');
       document.getElementById('quantity').value = 0;
       document.getElementById('quantity').setAttribute('disabled', 'true');
       setQuantity(0)
-      accessarySelect.select.clearValue();
+      accessorySelect.select.clearValue();
       wageSelect.select.clearValue();
     } else {
-      console.log(!selectedAccessary);
+      console.log(!selectedAccessory);
       console.log(!selectedWage);
       console.log(!content);
       console.log(!quantity);
 
-      if (!selectedAccessary || !selectedWage || !content || !quantity) {
+      if (!selectedAccessory || !selectedWage || !content || !quantity) {
         window.alert('Bạn chưa điền đủ thông tin cho form!!!');
         return;
       }
 
-      if(document.getElementById('quantity').value <= 0) {
+      if (document.getElementById('quantity').value <= 0) {
         window.alert('Số lượng vật tư phụ tùng không hợp lệ. Số lượng phụ tùng dùng phải lớn hơn 0!!!');
         return;
       }
@@ -207,14 +207,14 @@ export default function CreateRepairVotesPage() {
       let tmpRepairVoteDetail = repairVoteDetail;
       tmpRepairVoteDetail[editIndex] = {
         content,
-        accessary: selectedAccessary._id,
-        accessary_name: selectedAccessary.name,
-        accessary_unitPrice: selectedAccessary.unitPrice,
+        accessory: selectedAccessory._id,
+        accessory_name: selectedAccessory.name,
+        accessory_unitPrice: selectedAccessory.unitPrice,
         quantity: document.getElementById('quantity').value,
         wage: selectedWage._id,
         wage_type: selectedWage.name,
         wage_price: selectedWage.price,
-        price: quantity * selectedAccessary.unitPrice + selectedWage.price
+        price: quantity * selectedAccessory.unitPrice + selectedWage.price
       };
 
       console.log(tmpRepairVoteDetail);
@@ -225,20 +225,20 @@ export default function CreateRepairVotesPage() {
       setTotalPrice(newPrice);
 
 
-      let tmp = accessaries.map(accessary => {
-        if (accessary._id === repairVoteDetail[editIndex].accessary)
-          accessary.remaining -= repairVoteDetail[editIndex].quantity;
+      let tmp = accessories.map(accessory => {
+        if (accessory._id === repairVoteDetail[editIndex].accessory)
+          accessory.remaining -= repairVoteDetail[editIndex].quantity;
 
-        return { ...accessary };
+        return { ...accessory };
       })
-      setAccessaries(tmp);
+      setAccessories(tmp);
 
       document.getElementById('content').value = '';
       setContent('');
       document.getElementById('quantity').value = 0;
       document.getElementById('quantity').setAttribute('disabled', 'true');
       setQuantity(0)
-      accessarySelect.select.clearValue();
+      accessorySelect.select.clearValue();
       wageSelect.select.clearValue();
 
       document.querySelectorAll('tbody tr')[editIndex].style.backgroundColor = null;
@@ -246,7 +246,7 @@ export default function CreateRepairVotesPage() {
 
       setOldPrice(0);
       setEditIndex(0);
-      oldAccessary = null;
+      oldAccessory = null;
       oldQuantity = 0;
     }
   }
@@ -261,31 +261,31 @@ export default function CreateRepairVotesPage() {
     contentInput.value = repairVoteDetail[index].content;
     setContent(repairVoteDetail[index].content);
     quantityInput.value = 0;
-    accessarySelect.select.setValue({value: repairVoteDetail[index].accessary, label: repairVoteDetail[index].accessary_name});
-    wageSelect.select.setValue({value: repairVoteDetail[index].wage, label: repairVoteDetail[index].wage_type});
+    accessorySelect.select.setValue({ value: repairVoteDetail[index].accessory, label: repairVoteDetail[index].accessory_name });
+    wageSelect.select.setValue({ value: repairVoteDetail[index].wage, label: repairVoteDetail[index].wage_type });
 
     setOldPrice(repairVoteDetail[index].price);
-    oldAccessary = repairVoteDetail[index].accessary;
+    oldAccessory = repairVoteDetail[index].accessory;
     oldQuantity = repairVoteDetail[index].quantity;
     setEditIndex(index);
-    
+
     document.querySelectorAll('tbody tr')[index].style.backgroundColor = 'hsl(0, 0%, 85%)';
 
-    setSelectedAccessary(accessaries.filter(accessary => {
-      return accessary._id === oldAccessary
+    setSelectedAccessory(accessories.filter(accessory => {
+      return accessory._id === oldAccessory
     })[0]);
 
     setSelectedWage(wages.filter(wage => {
       return wage._id === repairVoteDetail[index].wage;
     })[0]);
-          
-    let oldTmp = accessaries.map(accessary => {
-      if (accessary._id === oldAccessary)
-        accessary.remaining += Number(oldQuantity)
 
-      return { ...accessary };
+    let oldTmp = accessories.map(accessory => {
+      if (accessory._id === oldAccessory)
+        accessory.remaining += Number(oldQuantity)
+
+      return { ...accessory };
     })
-    setAccessaries(oldTmp);
+    setAccessories(oldTmp);
 
   }
 
@@ -312,9 +312,8 @@ export default function CreateRepairVotesPage() {
         details: repairVoteDetail
       }).then(res => {
         if (res && res.status === 201) {
-
           callAPI('GET', '/api/receiving-forms')
-            .then(async res => {
+            .then(res => {
               if (res && res.status === 200) {
                 setReceivingForms(res.data.filter(receivingForm => {
                   return !(receivingForm.isRepaired);
@@ -322,24 +321,38 @@ export default function CreateRepairVotesPage() {
               }
               window.alert('Lập phiếu sửa chữa thành công!!!');
               setLoading(false);
-            });
+            }).catch(error => {
+                if(error.response && error.response.data)
+                    alert("Lỗi: " + error.response.data.message);
+                setLoading(false);
+            })
 
-          callAPI('GET', '/api/accessaries')
+          callAPI('GET', '/api/accessories')
             .then(res => {
               if (res && res.status === 200) {
-                setAccessaries(res.data);
+                setAccessories(res.data);
               }
-            });
+            }).catch(error => {
+                if(error.response && error.response.data)
+                    alert("Lỗi: " + error.response.data.message);
+                setLoading(false);
+            })
 
           callAPI('GET', '/api/wages')
             .then(res => {
               if (res && res.status === 200) {
                 setWages(res.data);
               }
-            });
-        } else {
-          window.alert('Có lỗi xảy ra trong quá trình lưu, vui lòng thử lại!!!');
+            }).catch(error => {
+                if(error.response && error.response.data)
+                    alert("Lỗi: " + error.response.data.message);
+                setLoading(false);
+            })
         }
+      }).catch(error => {
+          if(error.response && error.response.data)
+              alert("Lỗi: " + error.response.data.message);
+          setLoading(false);
       })
     }
   }
@@ -352,7 +365,7 @@ export default function CreateRepairVotesPage() {
     setContent('');
     document.getElementById('quantity').value = 1;
     setQuantity(0);
-    accessarySelect.select.clearValue();
+    accessorySelect.select.clearValue();
     wageSelect.select.clearValue();
   }
 
@@ -363,14 +376,14 @@ export default function CreateRepairVotesPage() {
       let tmp = repairVoteDetail;
       let deletedRow = tmp.splice(index, 1);
       deletedRow.forEach(row => {
-        let tmp = accessaries.map(accessary => {
-          if (accessary._id === row.accessary)
-            accessary.remaining = Number(accessary.remaining) + Number(row.quantity);
+        let tmp = accessories.map(accessory => {
+          if (accessory._id === row.accessory)
+            accessory.remaining = Number(accessory.remaining) + Number(row.quantity);
 
-          return { ...accessary };
+          return { ...accessory };
         })
 
-        setAccessaries(tmp);
+        setAccessories(tmp);
       })
       setRepairVoteDetail(tmp);
     }
@@ -381,12 +394,12 @@ export default function CreateRepairVotesPage() {
       <tr key={index}>
         <td>{String(index + 1).padStart(2, '0')}</td>
         <td>{row.content}</td>
-        <td>{row.accessary_name}</td>
+        <td>{row.accessory_name}</td>
         <td>{row.quantity}</td>
-        <td>{row.accessary_unitPrice.toLocaleString('de-DE') + 'đ'}</td>
+        <td>{row.accessory_unitPrice.toLocaleString('de-DE') + 'đ'}</td>
         <td>{row.wage_type}</td>
         <td>{row.wage_price.toLocaleString('de-DE') + 'đ'}</td>
-        <td>{(row.quantity * row.accessary_unitPrice + row.wage_price).toLocaleString('de-DE') + 'đ'}</td>
+        <td>{(row.quantity * row.accessory_unitPrice + row.wage_price).toLocaleString('de-DE') + 'đ'}</td>
         <td className="py-2">
           <button className="btn py-0 mr-3" onClick={(event) => deleteRow(event, index)}><i className="fas fa-trash-alt text-danger"></i></button>
           <button className="btn py-0" onClick={(event) => handleEditClick(event, index)}><i className="fas fa-edit text-success"></i></button>
@@ -412,7 +425,7 @@ export default function CreateRepairVotesPage() {
       )
     }
   };
-  
+
   return (
     <div className="container parent">
       {displayLoading()}
@@ -462,14 +475,14 @@ export default function CreateRepairVotesPage() {
                 <div className="form-group selectpicker--custom">
                   <label>Vật tư phụ tùng</label>
                   <Select
-                    defaultValue={accessaryOptions[0]}
-                    options={accessaryOptions}
-                    onChange={handleAccessaryOnChange}
+                    defaultValue={accessoryOptions[0]}
+                    options={accessoryOptions}
+                    onChange={handleAccessoryOnChange}
                     components={{
                       IndicatorSeparator: () => null
                     }}
                     ref={ref => {
-                      accessarySelect = ref;
+                      accessorySelect = ref;
                     }}
                   />
                 </div>

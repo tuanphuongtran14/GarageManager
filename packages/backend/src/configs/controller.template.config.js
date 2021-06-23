@@ -45,6 +45,23 @@ module.exports = function(Model) {
                     message: err.message || `Some errors occur while finding ${Model} with ID ${id}`
                 });
             }
+        },
+        update: async (req, res) => {
+            let id = req.params.id;
+            let updateContent = req.body;
+
+            try {
+                await services.update(id, updateContent);
+                return res.status(200).json({
+                    statusCode: 200,
+                    message: `Update ${Model} with ID ${id} successfully`
+                });
+            } catch(err) {
+                return res.status(500).json({
+                    statusCode: 500,
+                    message: err.message || `Some errors occur while updating ${Model} with ID ${id}`
+                });
+            }
         }
     }
 }

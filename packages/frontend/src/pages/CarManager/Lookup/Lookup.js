@@ -1,23 +1,41 @@
 import React, { useEffect, useState } from 'react';
 import './Lookup.css';
-import Select from 'react-select';
 import callAPI from '../../../utils/apiCaller';
-import { set } from 'lodash';
+import axios from 'axios';
 
 export default function Lookup() {
   const [loading, setLoading] = useState(true);
   const [resultLoading, setResultLoading] = useState(false);
   const [cars, setCars] = useState([]);
 
+  // Fetch cars list first time
   useEffect(() => {
-    callAPI('GET', '/api/cars')
+    fetchCarsList();
+  }, []);
+
+  // Fetch cars list function
+  const fetchCarsList = () => {
+    // -- Turn on loading screen --
+    setLoading(true);
+    axios({
+      method: 'GET',
+      url: '/api/cars'
+    })
       .then(res => {
         if (res && res.status === 200) {
           setCars(res.data);
+
+          // -- Turn off loading screen --
           setLoading(false);
         }
-      });
-  }, []);
+      })
+      .catch(error => {
+        if(error.response && error.response.data)
+          alert("Lỗi: " + error.response.data.message);
+        // -- Turn off loading screen --
+        setLoading(false);
+      })
+  }
 
   const handleSubmit = event => {
     event.preventDefault();
@@ -39,16 +57,21 @@ export default function Lookup() {
       });
   }
 
-  console.log('render');
-  const resultTable = cars.map((row, index) => {
+  const resultTable = cars.map((car, index) => {
+    let actions = (<button className="btn btn-primary" onClick={event => giveCarBack(event, car._id, car.licensePlate)}>Trả xe</button>);
+
+    if(car.status === false)
+      actions = (<button className="btn btn-secondary" disabled>Trả xe</button>);
+
     return (
       <tr key={ index }>
         <td>{String(index + 1).padStart(3, '0')}</td>
-        <td>{row.licensePlate}</td>
-        <td>{row.carBrand.name}</td>
-        <td>{row.carOwner.name}</td>
-        <td>{row.carOwner.phoneNumber}</td>
-        <td>{row.debt}</td>
+        <td>{car.licensePlate}</td>
+        <td>{car.carBrand.name}</td>
+        <td>{car.carOwner.name}</td>
+        <td>{car.carOwner.phoneNumber}</td>
+        <td>{car.debt}</td>
+        <td className="text-center">{ actions }</td>
       </tr>
     )
   })
@@ -88,6 +111,37 @@ export default function Lookup() {
       )
     }
   };
+
+  const giveCarBack = (event, carId, carPlate) => {
+    event.preventDefault();
+    // -- Turn on loading screen --
+    setLoading(true);
+
+    // -- Give car back --
+    axios({
+      method: 'PUT',
+      url: `/api/cars/${carId}`,
+      data: {
+        status: false
+      },
+    })
+      .then(response => {
+        alert(`Trả xe mang biển số ${carPlate} thành công!!!`);
+        
+        // -- Fetch new data --
+        fetchCarsList()
+
+        // -- Turn off loading screen --
+        setLoading(false);
+      })
+      .catch(error => {
+        if(error.response && error.response.data)
+          alert("Lỗi: " + error.response.data.message);
+
+        // -- Turn off loading screen --
+        setLoading(false);
+      })
+  }
 
   return (
     <div className="container parent">
@@ -130,6 +184,7 @@ export default function Lookup() {
                   <th>Chủ xe</th>
                   <th>Số điện thoại</th>
                   <th>Tiền nợ</th>
+                  <th className="text-center">Thao tác</th>
                 </tr>
               </thead>
               <tbody className="parent" >

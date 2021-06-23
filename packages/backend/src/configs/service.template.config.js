@@ -11,6 +11,9 @@ module.exports = function(Model) {
         },
         findOne: (Id) => {
             return Model.findById(Id);
+        },
+        update: (id, updateContent) => {
+            return Model.findByIdAndUpdate(id, {...updateContent});
         }
     }
 }
