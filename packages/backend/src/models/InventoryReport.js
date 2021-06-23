@@ -4,7 +4,7 @@ exports.initInventoryReport = function(mongoose) {
     // Create Repair Vote Schema
     const InventoryReportSchema = new Schema({
         reportDate: { type: Date, default: Date.now},
-        reportDetail: [{ type: Schema.Types.ObjectId, ref: 'InventoryReportDetail' }] 
+        reportDetails: [{ type: Schema.Types.ObjectId, ref: 'InventoryReportDetail' }] 
     });
 
     // Create Repair Vote Model
