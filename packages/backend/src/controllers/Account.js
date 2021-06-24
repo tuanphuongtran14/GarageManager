@@ -4,6 +4,7 @@ const bcrypt = require('bcrypt');
 const { Account, Session } = require('../models');
 const AccountService = require('../services/Account');
 const AccountServiceTemplate = require('../configs/service.template.config')(Account);
+const SessionService = require('../configs/service.template.config')(Session);
 
 /* ````````````Declare your custom controller here `````````````````````*/
 
@@ -97,7 +98,31 @@ const login = async (req, res) => {
     }
 }
 
+const sendRole = async (req, res) => {
+    // check if session in db
+    try {
+        let session = req.signedCookies.sessionId;
+        let sessionList = await SessionService.find();
+        for (let i = 0; i < sessionList.length; i++) {
+            if (session === sessionList[i].sessionId) {
+                return res.status(201).json({
+                    role: sessionList[i].role
+                });
+            }
+        }
+        return res.status(400).json({
+            error: 'Fake session'
+        });
+    } catch (err) {
+        return res.status(500).json({
+            statusCode: 500,
+            message: err.message || `Some errors happened`
+        });
+    }
+}
+
 module.exports = {
     create,
-    login
+    login,
+    sendRole
 }
