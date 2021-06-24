@@ -121,8 +121,17 @@ const sendRole = async (req, res) => {
     }
 }
 
+const logOut = (req, res) => {
+    res.clearCookie('sessionId');
+    res.status(200).json({
+        statusCode: 200,
+        message: 'Log out successfully'
+    });
+}
+
 module.exports = {
     create,
     login,
-    sendRole
+    logOut,
+    sendRole,
 }
