@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import print from 'print-js';
-import './MonthlySalesReport.css';
+import './MonthlyInventoryReport.css';
 
-export default function MonthlySalesReport() {
+export default function MonthlyInventoryReport() {
     // Loading screen state
     const [loading, setLoading] = useState(false);
     // Other state
@@ -17,7 +17,7 @@ export default function MonthlySalesReport() {
         // -- Create report --
         axios({
             method: 'POST',
-            url: '/api/sales',
+            url: '/api/inventory-reports',
             data: {
                 month: document.getElementById("month").value,
                 year: document.getElementById("year").value,
@@ -30,9 +30,9 @@ export default function MonthlySalesReport() {
                 setLoading(false);
             })
             .catch(error => {
-                if(error.response && error.response.data)
+                if (error.response && error.response.data)
                     alert("Lỗi: " + error.response.data.message);
-                
+
                 // -- Turn off loading screen --
                 setLoading(false);
             })
@@ -40,51 +40,50 @@ export default function MonthlySalesReport() {
 
     const displayLoading = () => {
         if (loading) {
-          return (
-            <div className="container loading">
-              <div className="spinner-grow text-primary" role="status">
-                <span className="sr-only">Loading...</span>
-              </div>
-              <div className="spinner-grow text-primary" role="status">
-                <span className="sr-only">Loading...</span>
-              </div>
-              <div className="spinner-grow text-primary" role="status">
-                <span className="sr-only">Loading...</span>
-              </div>
-            </div>
-          )
+            return (
+                <div className="container loading">
+                    <div className="spinner-grow text-primary" role="status">
+                        <span className="sr-only">Loading...</span>
+                    </div>
+                    <div className="spinner-grow text-primary" role="status">
+                        <span className="sr-only">Loading...</span>
+                    </div>
+                    <div className="spinner-grow text-primary" role="status">
+                        <span className="sr-only">Loading...</span>
+                    </div>
+                </div>
+            )
         }
-      };
+    };
 
     const displayReport = () => {
-        if(report) {
-            const rows = report.saleDetails.map((saleDetail, index) => {
+        if (report) {
+            const rows = report.reportDetails.map((reportDetail, index) => {
                 return (
                     <tr>
-                        <td>{ (index + 1).toString().padStart(2, 0) }</td>
-                        <td>{ saleDetail.carBrand.name }</td>
-                        <td className="text-center">{ saleDetail.numberOfRepairs }</td>
-                        <td className="text-center">{ saleDetail.totalSale.toLocaleString("DE-de") }</td>
-                        <td className="text-center">{ (saleDetail.ratio * 100).toFixed(2) }%</td>
+                        <td>{(index + 1).toString().padStart(3, 0)}</td>
+                        <td>{reportDetail.accessory.name}</td>
+                        <td className="text-center">{reportDetail.openingStock}</td>
+                        <td className="text-center">{reportDetail.arising }</td>
+                        <td className="text-center">{ reportDetail.endingStock }</td>
                     </tr>
                 )
             });
             return (
                 <>
                     <hr className="hr--custom" />
-                    <h5 className="text-center mt-4">
-                        Báo cáo doanh thu tháng { (new Date(report.reportDate)).getMonth() + 1 }
+                    <h5 className="text-center my-4">
+                        Báo cáo tồn tháng { (new Date(report.reportDate)).getMonth() + 1 }
                     </h5>
-                    <p className="text-center mt-3">Doanh thu: <strong>{ report.totalSale.toLocaleString("DE-de") }đ</strong></p>
                     <div className="list">
                         <table className="table">
                             <thead className="thead-dark sticky-top" style={{ zIndex: '0' }}>
                                 <tr>
                                     <th>STT</th>
-                                    <th>Hiệu xe</th>
-                                    <th className="text-center">Số lượt sửa</th>
-                                    <th className="text-center">Thành tiền</th>
-                                    <th className="text-center">Tỷ lệ</th>
+                                    <th>Mã phụ tùng</th>
+                                    <th className="text-center">Tồn đầu</th>
+                                    <th className="text-center">Phát sinh</th>
+                                    <th className="text-center">Tồn cuối</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -100,16 +99,15 @@ export default function MonthlySalesReport() {
         }
     }
 
-
     const handlePrintReport = event => {
         event.preventDefault();
-        const printData = report.saleDetails.map((detail, index) => {
+        const printData = report.reportDetails.map((detail, index) => {
             return {
                 number: (index + 1).toString().padStart(3, 0),
-                carBrand_name: detail.carBrand.name,
-                numberOfRepairs: detail.numberOfRepairs,
-                totalSale: detail.totalSale.toLocaleString("DE-de"),
-                ratio: (detail.ratio * 100).toFixed(2) + '%'
+                accessory_name: detail.accessory.name,
+                openingStock: detail.openingStock,
+                arising: detail.arising,
+                endingStock: detail.endingStock
             }
         });
         const reportDate = new Date(report.reportDate);
@@ -118,34 +116,34 @@ export default function MonthlySalesReport() {
             type: 'json',
             properties: [
               { field: 'number', displayName: 'STT'},
-              { field: 'carBrand_name', displayName: 'Hiệu xe'},
-              { field: 'numberOfRepairs', displayName: 'Số lượng sửa'},
-              { field: 'totalSale', displayName: 'Thành tiền'},
-              { field: 'ratio', displayName: 'Tỷ lệ'}
+              { field: 'accessory_name', displayName: 'Tên phụ tùng'},
+              { field: 'openingStock', displayName: 'Tồn đầu'},
+              { field: 'arising', displayName: 'Phát sinh'},
+              { field: 'endingStock', displayName: 'Tồn cuối'}
             ],
             header: `
-              <h3 class="text-center">Báo cáo doanh thu tháng ${ reportDate.getMonth() + 1 } năm ${ reportDate.getFullYear() }</h3>
+              <h3 class="text-center">Báo cáo tồn kho tháng ${ reportDate.getMonth() + 1 } năm ${ reportDate.getFullYear() }</h3>
             `,
             style: '.text-center { text-align: center; }'
         });
     }
 
-    
+
     return (
         <>
-            <div className="container parent">
+             <div className="container parent">
                 <div className="box">
-                    <h4 className="text-center mb-4">Lập báo cáo doanh thu tháng</h4>
+                    <h4 className="text-center mb-4">Lập báo cáo tồn tháng</h4>
                     <div className="d-flex align-items-center justify-content-center mb-4">
                         <label className="mr-3" htmlFor>Tháng:</label>
                         <input type="text" className="form-control search-form mr-5" name="month" id="month" aria-describedby="helpId" placeholder />
                         <label className="mr-3" htmlFor>Năm:</label>
                         <input type="text" className="form-control search-form mr-5" name="year" id="year" aria-describedby="helpId" placeholder />
-                        <button type="submit" className="btn btn-primary" onClick={ handleSubmit }>Lập báo cáo doanh thu</button>
+                        <button type="submit" className="btn btn-primary" onClick={handleSubmit}>Lập báo cáo doanh thu</button>
                     </div>
-                    { displayReport() }
+                    {displayReport()}
                 </div>
-                { displayLoading() }
+                {displayLoading()}
             </div>
         </>
     )

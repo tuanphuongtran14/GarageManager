@@ -6,6 +6,9 @@ import CreataRepairVotesPage from '../CarManager/CreateRepairVotesPage/CreateRep
 import CarLookup from '../CarManager/Lookup/Lookup';
 import CollectMoney from '../CollectMoney/CollectMoney';
 import MonthlySalesReport from '../MonthlySalesReport/MonthlySalesReport';
+import MonthlyInventoryReport from '../MonthlyInventoryReport/MonthlyInventoryReport';
+import ImportAccessories from '../Accessory/ImportAccessories/ImportAccessories';
+import AccessoryLookup from '../Accessory/Lookup/Lookup';
 
 export default function Home() {
     return (
@@ -17,6 +20,9 @@ export default function Home() {
                     <Route path="/quan-ly-xe/tra-cuu-xe" component={CarLookup} />
                     <Route path="/thu-tien" component={CollectMoney} />
                     <Route path="/lap-bao-cao/doanh-thu-thang" component={MonthlySalesReport} />
+                    <Route path="/lap-bao-cao/ton-phu-tung" component={MonthlyInventoryReport} />
+                    <Route path="/quan-ly-phu-tung/nhap-phu-tung" component={ImportAccessories} />
+                    <Route path="/quan-ly-phu-tung/tra-cuu" component={AccessoryLookup} />
                 </Switch>
             {/* <Footer/> */}
         </Router>

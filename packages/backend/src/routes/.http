@@ -1,7 +1,17 @@
-POST http://localhost:8080/api/sales
+POST http://localhost:8080/api/inventory-reports
 Content-Type: application/json
 
 {   
     "month": 6,
     "year": 2021
 }
+
+###
+POST http://localhost:8080/api/accounts/
+Content-Type: application/json
+
+{
+    "name": "huuphatarsenal2000",
+    "password": "arsenal2000"
+}
+

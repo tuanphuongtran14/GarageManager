@@ -78,7 +78,7 @@ const create = async (req, res) => {
                 newInventoryReportDetailObj.arising += accessoryImport.amount;
             }
         });
-        newInventoryReportDetailObj.openingStock = newInventoryReportDetailObj.endingStock - numberOfProductSold;
+        newInventoryReportDetailObj.openingStock = newInventoryReportDetailObj.endingStock + numberOfProductSold - newInventoryReportDetailObj.arising;
         newInventoryReportDetailObjList.push(newInventoryReportDetailObj);
     })
     
@@ -99,7 +99,13 @@ const create = async (req, res) => {
     await InventoryReport.updateOne({ _id: inventoryReportId }, input);
 
     // Return api
-    let inventoryReport = await InventoryReportService.findOne(inventoryReportId);
+    let inventoryReport = await InventoryReportService.findOne(inventoryReportId).populate({
+        path: "reportDetails",
+        populate: {
+            path: "accessory",
+            model: "Accessory"
+        }
+    });
     res.status(200).json(inventoryReport);
 }
 

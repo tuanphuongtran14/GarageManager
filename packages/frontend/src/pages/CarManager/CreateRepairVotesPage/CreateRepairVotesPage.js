@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import './CreateRepairVotesPage.css';
 import Select from 'react-select';
-import callAPI from '../../../utils/apiCaller'
+import callAPI from '../../../utils/apiCaller';
+import print from 'print-js';
 
 
 export default function CreateRepairVotesPage() {
-  const [minRepairDate, setMinRepairDate] = useState();
-  const [receivingDate, setReceivingDate] = useState();
   const [loading, setLoading] = useState(true);
   const [receivingForms, setReceivingForms] = useState([]);
   const [accessories, setAccessories] = useState([]);
@@ -91,7 +90,6 @@ export default function CreateRepairVotesPage() {
       day = '0' + day.toString();
 
     var minDate = year + '-' + month + '-' + day;
-    setMinRepairDate(minDate);
 
     document.getElementById('repairDate').setAttribute('min', minDate);
   })
@@ -217,8 +215,6 @@ export default function CreateRepairVotesPage() {
         price: quantity * selectedAccessory.unitPrice + selectedWage.price
       };
 
-      console.log(tmpRepairVoteDetail);
-
       setRepairVoteDetail([...tmpRepairVoteDetail]);
 
       let newPrice = totalPrice + repairVoteDetail[editIndex].price - oldPrice;
@@ -314,12 +310,53 @@ export default function CreateRepairVotesPage() {
         if (res && res.status === 201) {
           callAPI('GET', '/api/receiving-forms')
             .then(res => {
+              let currentReceivingForm;
               if (res && res.status === 200) {
                 setReceivingForms(res.data.filter(receivingForm => {
+                  if(selectedCar === receivingForm._id)
+                    currentReceivingForm = receivingForm;
+
                   return !(receivingForm.isDone);
                 }));
               }
-              window.alert('Lập phiếu sửa chữa thành công!!!');
+              window.alert('Lập phiếu sửa chữa thành công!!! Vui lòng nhận phiếu in!!!');
+
+              const printData = repairVoteDetail.map((detail, index) => {
+                return {
+                  number: (index + 1).toString().padStart(3, 0),
+                  content: detail.content,
+                  accessory_name: detail.accessory_name,
+                  accessory_unitPrice: detail.accessory_unitPrice.toLocaleString("DE-de") + 'đ',
+                  quantity: detail.quantity,
+                  wage_type: detail.wage_type,
+                  wage_price: detail.wage_price.toLocaleString("DE-de") + 'đ',
+                  price: detail.price.toLocaleString("DE-de") + 'đ'
+                }
+              })
+
+              print({
+                printable: printData,
+                type: 'json',
+                properties: [
+                  { field: 'number', displayName: 'STT'},
+                  { field: 'content', displayName: 'Nội dung'},
+                  { field: 'accessory_name', displayName: 'Tên phụ tùng'},
+                  { field: 'accessory_unitPrice', displayName: 'Đơn giá'},
+                  { field: 'quantity', displayName: 'Số lượng'},
+                  { field: 'wage_type', displayName: 'Loại tiền công'},
+                  { field: 'wage_price', displayName: 'Tiền công'},
+                  { field: 'price', displayName: 'Thành tiền'},
+                ],
+                header: `
+                  <h3 class="text-center">Phiếu sửa chữa</h3>
+                  <p>Xe được sửa chữa: ${ currentReceivingForm.car.licensePlate }</p>
+                  <p>Ngày tiếp nhận: ${ currentReceivingForm.receivingDate.slice(0, 10) }</p>
+                  <p>Ngày sửa chữa: ${ document.getElementById('repairDate').value }</p>
+                  <p>Tổng thành tiền: ${ document.getElementById('totalPrice').value }</p>
+                `,
+                style: '.text-center { text-align: center; }'
+              })
+
               setLoading(false);
             }).catch(error => {
                 if(error.response && error.response.data)
@@ -515,7 +552,7 @@ export default function CreateRepairVotesPage() {
               </div>
             </div>
             <div className="list mt-3 mb-4">
-              <table className="table table--custom">
+              <table className="table table--custom" id="detailed-table">
                 <thead className="thead-dark sticky-top" style={{ zIndex: 0 }}>
                   <tr>
                     <th>STT</th>
