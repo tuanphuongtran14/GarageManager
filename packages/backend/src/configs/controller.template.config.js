@@ -62,6 +62,18 @@ module.exports = function(Model) {
                     message: err.message || `Some errors occur while updating ${Model} with ID ${id}`
                 });
             }
-        }
+        },
+        deleteOne: async (req, res) => {
+            let id = req.params.id;
+            try {
+                let document = await services.deleteOne(id);
+                return res.status(200).json(document);
+            } catch(err) {
+                return res.status(500).json({
+                    statusCode: 500,
+                    message: err.message || `Some errors occur while deleting ${Model} with ID ${id}`
+                });
+            }
+        },
     }
 }

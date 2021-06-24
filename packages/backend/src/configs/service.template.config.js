@@ -14,6 +14,9 @@ module.exports = function(Model) {
         },
         update: (id, updateContent) => {
             return Model.findByIdAndUpdate(id, {...updateContent});
-        }
+        },
+        deleteOne: (Id) => {
+            return Model.deleteOne({ _id: Id });
+        },
     }
 }
