@@ -16,18 +16,21 @@ const create = async (req, res) => {
         });
     input.month -= 1;
     input.saleDetails = [];
+
     // Find repair vote in this month/year
     let repairVoteList = await RepairVoteService.find().lean();
     let repairVoteListInThisMonth = repairVoteList.filter(repairVote => {
         return (repairVote.repairDate.getMonth() == input.month)
             && (repairVote.repairDate.getFullYear() == input.year);
     })
+
     // check if no repair happened this month / year
     if (repairVoteListInThisMonth.length == 0)
         res.status(400).json({
             statusCode: 400,
             error: 'No data found because no repair happened this time'
         });
+
     // Find total sale and report date
     let totalSale = 0;
     input.reportDate = new Date(input.year, input.month, new Date().getDate());
@@ -37,10 +40,16 @@ const create = async (req, res) => {
         totalSale += repairVote.totalPrice;
     })
     input.totalSale = totalSale;
+
     // Save sale temporarily
     let saleId;
     try {
-        let Sale = await SaleService.create(input).then(newSale => { saleId = newSale._id });
+        let Sale = await SaleService.create(input)
+            .then(newSale => { saleId = newSale._id })
+            .catch(err => {
+                if (err)
+                    throw new Error(err);
+            });
     } catch (err) {
         return res.status(500).json({
             statusCode: 500,

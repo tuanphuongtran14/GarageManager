@@ -17,6 +17,7 @@ const { initAccount } = require('./Account');
 const { initInventoryReport } = require('./InventoryReport');
 const { initInventoryReportDetail } = require('./InventoryReportDetail');
 const { initParameter } = require('./Parameter');
+const { initSession } = require('./Session');
 
 const db = {};
 
@@ -41,5 +42,6 @@ db.Account = initAccount(mongoose);
 db.InventoryReport = initInventoryReport(mongoose);
 db.InventoryReportDetail = initInventoryReportDetail(mongoose);
 db.Parameter = initParameter(mongoose);
+db.Session = initSession(mongoose);
 
 module.exports = db;
