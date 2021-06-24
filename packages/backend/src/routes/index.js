@@ -12,7 +12,7 @@ const AccessoryImportFormRouter = require('./AccessoryImportForm');
 const SaleRouter = require('./Sale');
 const InventoryReportRouter = require('./InventoryReport');
 
-const { checkAuthentication } = require('../middlewares/authentication');
+const { checkAuthentication, checkAdmin } = require('../middlewares/authentication');
 
 module.exports = function(app) {
   app.use('/api/car-brands', checkAuthentication, CarBrandRouter);
@@ -25,7 +25,7 @@ module.exports = function(app) {
   app.use('/api/parameters', checkAuthentication, ParameterRouter);
   app.use('/api/bills', checkAuthentication, BillRouter);
   app.use('/api/accessories', checkAuthentication, AccessoryRouter);
-  app.use('/api/accessory-import-forms', checkAuthentication, AccessoryImportFormRouter);
-  app.use('/api/sales', checkAuthentication, SaleRouter);
-  app.use('/api/inventory-reports', checkAuthentication, InventoryReportRouter);
+  app.use('/api/accessory-import-forms', checkAuthentication, checkAdmin, AccessoryImportFormRouter);
+  app.use('/api/sales', checkAuthentication, checkAdmin, SaleRouter);
+  app.use('/api/inventory-reports', checkAuthentication, checkAdmin, InventoryReportRouter);
 }

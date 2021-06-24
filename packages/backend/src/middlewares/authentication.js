@@ -13,6 +13,7 @@ async function checkAuthentication(req, res, next) {
     for (let i = 0; i < sessionList.length; i++) {
         if (session === sessionList[i].sessionId) {
             fakeSession = true;
+            res.locals.role = sessionList[i].role;
         }
     }
     if (fakeSession) {
@@ -25,6 +26,19 @@ async function checkAuthentication(req, res, next) {
         })
 }
 
+function checkAdmin(req, res, next) {
+    if (res.locals.role === 'Admin') {
+        next();
+    }
+    else {
+        return res.status(400).json({
+            statusCode: 400,
+            error: 'Only admin can access this api'
+        })
+    }
+}
+
 module.exports = {
     checkAuthentication,
+    checkAdmin
 }
