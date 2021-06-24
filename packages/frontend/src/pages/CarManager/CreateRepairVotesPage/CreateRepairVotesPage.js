@@ -32,7 +32,7 @@ export default function CreateRepairVotesPage() {
       .then(async res => {
         if (res && res.status === 200) {
           setReceivingForms(res.data.filter(receivingForm => {
-            return !(receivingForm.isRepaired);
+            return !(receivingForm.isDone);
           }));
         }
         setLoading(false);
@@ -316,7 +316,7 @@ export default function CreateRepairVotesPage() {
             .then(res => {
               if (res && res.status === 200) {
                 setReceivingForms(res.data.filter(receivingForm => {
-                  return !(receivingForm.isRepaired);
+                  return !(receivingForm.isDone);
                 }));
               }
               window.alert('Lập phiếu sửa chữa thành công!!!');
@@ -411,7 +411,7 @@ export default function CreateRepairVotesPage() {
   const displayLoading = () => {
     if (loading) {
       return (
-        <div className="container loading">
+        <div className="container loading" style={{zIndex: 100000}}>
           <div className="spinner-grow text-primary" role="status">
             <span className="sr-only">Loading...</span>
           </div>

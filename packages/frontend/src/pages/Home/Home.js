@@ -5,6 +5,7 @@ import ReceivingCar from '../CarManager/ReceivingPage/ReceivingPage';
 import CreataRepairVotesPage from '../CarManager/CreateRepairVotesPage/CreateRepairVotesPage';
 import CarLookup from '../CarManager/Lookup/Lookup';
 import CollectMoney from '../CollectMoney/CollectMoney';
+import MonthlySalesReport from '../MonthlySalesReport/MonthlySalesReport';
 
 export default function Home() {
     return (
@@ -15,6 +16,7 @@ export default function Home() {
                     <Route path="/quan-ly-xe/lap-phieu-sua-chua" component={CreataRepairVotesPage} />
                     <Route path="/quan-ly-xe/tra-cuu-xe" component={CarLookup} />
                     <Route path="/thu-tien" component={CollectMoney} />
+                    <Route path="/lap-bao-cao/doanh-thu-thang" component={MonthlySalesReport} />
                 </Switch>
             {/* <Footer/> */}
         </Router>

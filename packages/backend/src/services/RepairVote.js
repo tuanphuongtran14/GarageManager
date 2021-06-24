@@ -41,6 +41,10 @@ exports.create = async input => {
     });
     await newRepairVotes.save();
 
+    // Set receiving form isDone to true
+    receivingForm.isDone = true;
+    await receivingForm.save();
+
     return newRepairVotes;
 }
 
