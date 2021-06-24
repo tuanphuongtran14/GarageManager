@@ -10,9 +10,9 @@ const create = async (req, res) => {
     let input = req.body;
     // validation month
     if (input.month < 1 || input.month > 12)
-        res.status(400).json({
+        return res.status(400).json({
             statusCode: 400,
-            error: 'Invalid month'
+            message: 'Invalid month'
         });
     input.month -= 1;
     input.saleDetails = [];
@@ -26,9 +26,9 @@ const create = async (req, res) => {
 
     // check if no repair happened this month / year
     if (repairVoteListInThisMonth.length == 0)
-        res.status(400).json({
+        return res.status(400).json({
             statusCode: 400,
-            error: 'No data found because no repair happened this time'
+            message: 'No data found because no repair happened this time'
         });
 
     // Find total sale and report date
@@ -75,7 +75,7 @@ const create = async (req, res) => {
             }
         });
         if (newSaleDetailObj.totalSale > 0)
-            newSaleDetailObj.ratio = totalSale / newSaleDetailObj.totalSale;
+            newSaleDetailObj.ratio =  newSaleDetailObj.totalSale / totalSale;
         newSaleDetailObjList.push(newSaleDetailObj);
     })
     for (let i = 0; i < newSaleDetailObjList.length; i++) {
@@ -85,7 +85,7 @@ const create = async (req, res) => {
             })
             .catch(err => {
                 if (err)
-                    res.status(500).json({
+                return res.status(500).json({
                         statusCode: 500,
                         message: err.message || 'Some errors occur while creating new sale detail'
                     })
@@ -94,8 +94,14 @@ const create = async (req, res) => {
     await Sale.updateOne({ _id: saleId }, input);
 
     // Return api
-    let saleReport = await SaleService.findOne(saleId);
-    res.status(200).json(saleReport);
+    let saleReport = await SaleService.findOne(saleId).populate({
+        path: "saleDetails",
+        populate: {
+            path: "carBrand",
+            model: "CarBrand"
+        }
+    });
+    return res.status(200).json(saleReport);
 }
 
 const find = async (req, res) => {

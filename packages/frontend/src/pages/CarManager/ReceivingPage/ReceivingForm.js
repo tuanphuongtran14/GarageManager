@@ -54,7 +54,7 @@ function ReceivingForm(props) {
         var maxDate = year + '-' + month + '-' + day;
         setMinReceivingDate(maxDate);
 
-        document.getElementById('receivingDate').setAttribute('min', maxDate);
+        document.getElementById('receivingDate').setAttribute('value', maxDate);
     })
 
     // hanle when receiving date on change
@@ -143,7 +143,7 @@ function ReceivingForm(props) {
 
         props.setLoading(true);
 
-        callAPI('POST', '/api/receiving-forms/send', formData)
+        callAPI('POST', '/api/receiving-forms', formData)
             .then(res => {
                 if (res && res.status === 201) {
                     window.alert("Đã tiếp nhận xe mang biển số " + licensePlate.value);
@@ -163,9 +163,11 @@ function ReceivingForm(props) {
                                 props.setLoading(false);
                             }
                         })
-                } else {
-                    window.alert("Không thể tiếp nhận vì: Xe mang biển số " + licensePlate.value + " đã được tiếp nhận trước đó");
                 }
+            }).catch(error => {
+                if(error.response && error.response.data)
+                    alert("Lỗi: " + error.response.data.message);
+                props.setLoading(false);
             })
 
     }
@@ -227,7 +229,7 @@ function ReceivingForm(props) {
 
                 <div className="form-group">
                     <label>Ngày tiếp nhận</label>
-                    <input type="date" id="receivingDate" name="receivingDate" className="form-control" onBlur={handleReceivingDateOnChange} />
+                    <input type="date" id="receivingDate" name="receivingDate" disabled className="form-control" onBlur={handleReceivingDateOnChange} />
                 </div>
                 <div className="d-flex justify-content-between mt-4">
                     <button type="submit" className="btn btn-success w-50" onClick={handleSubmit}>Gửi ngay</button>
