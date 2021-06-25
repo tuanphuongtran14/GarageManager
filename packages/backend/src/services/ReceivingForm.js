@@ -1,8 +1,17 @@
-const { Customer, Car, CarBrand, ReceivingForm } = require('../models');
+const { Customer, Car, CarBrand, ReceivingForm, Parameter } = require('../models');
 
 /* `````````````````````````````````` */
 // Put your custom services code below this line
 exports.create = async formInput => {
+    // Max number of car in day
+    const { maxNumberOfReceivedCarInDay } = await Parameter.findOne({});
+
+    // Check number of received is less than setting or not
+    const today = (new Date()).toISOString().slice(0, 10);
+    const receivingForms = await ReceivingForm.find({receivingDate: {$gte: today}});
+    if(receivingForms.length >= maxNumberOfReceivedCarInDay)
+        throw new Error(`Garaga chỉ tiếp nhận tối đa ${maxNumberOfReceivedCarInDay} xe mỗi ngày!!!`)
+
     // If phone number has already existed, find its owner
     let customer = await Customer.findOne({
         phoneNumber: formInput.phoneNumber
@@ -14,6 +23,7 @@ exports.create = async formInput => {
             name: formInput.name,
             phoneNumber: formInput.phoneNumber,
             address: formInput.address,
+            email: formInput.email
         }).save();
     }
 

@@ -6,12 +6,18 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const cors = require('cors');
 const db = require('./src/models');
+const origin = "http://localhost:3000"
 
 
 const router = require('./src/routes');
 const app = express();
 
-app.use(cors());
+app.use(
+  cors({
+    credentials: true,
+    origin
+  }),
+);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'src/views'));

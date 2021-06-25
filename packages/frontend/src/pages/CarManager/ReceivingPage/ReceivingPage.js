@@ -4,11 +4,13 @@ import ReceivingList from './ReceivingList';
 import ReceivingForm from './ReceivingForm';
 import callAPI from '../../../utils/apiCaller';
 import { connect } from 'react-redux';
-import * as actions from '../../../redux/actions/index'
+import * as actions from '../../../redux/actions/index';
 
 
 function ReceivingCar(props) {
     const [loading, setLoading] = useState(true);
+
+    // Fetch receiving form in day
     useEffect(() => {
         callAPI('GET', '/api/receiving-forms')
             .then(res => {
@@ -17,6 +19,8 @@ function ReceivingCar(props) {
                 }
             })
     }, []);
+
+
     const callLoading = (value) => {
         setLoading(value);
     }

@@ -99,17 +99,19 @@ export default function CollectMoney() {
     // Handle car select on change
     const handleCarSelectOnChange = selectedOption => {
       let length = cars.length;
+      let tmp;
 
       if(selectedOption)
         for (let i = 0; i < length; i++)
           if(selectedOption.value === cars[i]._id) {
             setSelectedCar(cars[i]);
+            tmp = cars[i]
             break;
           }
 
-      document.getElementById('customerName').value = selectedCar.carOwner.name;
-      document.getElementById('phoneNumber').value = selectedCar.carOwner.phoneNumber;
-      document.getElementById('email').value = selectedCar.carOwner.email;
+      document.getElementById('customerName').value = tmp.carOwner.name;
+      document.getElementById('phoneNumber').value = tmp.carOwner.phoneNumber;
+      document.getElementById('email').value = tmp.carOwner.email;
     }
 
     // Display selected car debt

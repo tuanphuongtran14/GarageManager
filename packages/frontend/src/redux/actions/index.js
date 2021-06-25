@@ -1,10 +1,15 @@
 import * as types from '../constants/ActionTypes';
 
-export const setLogin = (userInfo, token) => {
+export const setLogin = (role) => {
     return {
         type: types.SET_LOGIN,
-        userInfo,
-        token
+        role
+    }
+}
+
+export const logout = () => {
+    return {
+        type: types.LOGOUT
     }
 }
 

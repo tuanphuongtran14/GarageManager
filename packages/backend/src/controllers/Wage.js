@@ -1,21 +1,18 @@
 const { Wage } = require('../models');
-const { find, findOne, create, deleteOne } = require('../configs/controller.template.config')(Wage);
+const { find, findOne, create, deleteOne, update } = require('../configs/controller.template.config')(Wage);
 
 /* ````````````Declare your custom controller here `````````````````````*/
 
-
-/* `````````````````````````````````````````````````````````````````````*/
-
 const searchName = async (req, res) => {
-    let input = req.query.name;
+    let query = req.query;
     try {
-        let wage = await Wage.find({ name: input});
-        if (wage.length > 0)
-            return res.status(201).json(wage);
-        return res.status(400).json({
-            statusCode: 400,
-            error: 'No wages matches this name'
-        })
+        let wages = await Wage.find({});
+        if(query.name)
+            wages = wages.filter(wage => {
+                return nonAccentVietnamese(wage.name.toLowerCase()).indexOf(nonAccentVietnamese(query.name.toLowerCase())) !== -1;
+            })
+       
+        return res.status(200).json(wages);
     } catch (err) {
         return res.status(500).json({
             statusCode: 500,
@@ -24,10 +21,32 @@ const searchName = async (req, res) => {
     }
 }
 
+/* `````````````````````````````````````````````````````````````````````*/
+
+
 module.exports = {
     find,
     findOne,
     create,
     deleteOne,
-    searchName
+    searchName,
+    update
+}
+
+
+// ======================================
+
+function nonAccentVietnamese(str) {
+    str = str.toLowerCase();
+    str = str.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a");
+    str = str.replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e");
+    str = str.replace(/ì|í|ị|ỉ|ĩ/g, "i");
+    str = str.replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g, "o");
+    str = str.replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g, "u");
+    str = str.replace(/ỳ|ý|ỵ|ỷ|ỹ/g, "y");
+    str = str.replace(/đ/g, "d");
+    // Some system encode vietnamese combining accent as individual utf-8 characters
+    str = str.replace(/\u0300|\u0301|\u0303|\u0309|\u0323/g, ""); // Huyền sắc hỏi ngã nặng 
+    str = str.replace(/\u02C6|\u0306|\u031B/g, ""); // Â, Ê, Ă, Ơ, Ư
+    return str;
 }

@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import Select from 'react-select';
 import callAPI from '../../../utils/apiCaller';
 import { connect } from 'react-redux';
-import * as actions from '../../../redux/actions/index'
+import * as actions from '../../../redux/actions/index';
+import axios from 'axios';
 
 function ReceivingForm(props) {
     const [cars, setCars] = useState([]);
@@ -20,6 +21,7 @@ function ReceivingForm(props) {
                 }
             });
     }, []);
+
 
     // Fetch car brands list
     useEffect(() => {
@@ -143,7 +145,13 @@ function ReceivingForm(props) {
 
         props.setLoading(true);
 
-        callAPI('POST', '/api/receiving-forms', formData)
+
+        console.log(formData);
+        axios({
+            method: 'POST',
+            url: '/api/receiving-forms',
+            data: formData
+        })
             .then(res => {
                 if (res && res.status === 201) {
                     window.alert("Đã tiếp nhận xe mang biển số " + licensePlate.value);
@@ -154,7 +162,14 @@ function ReceivingForm(props) {
                             if (res && res.status === 200) {
                                 setCars([...res.data]);
                             }
-                        });
+                        })
+                        .catch(error => {
+                            console.log(error.response);
+                            if(error.response && error.response.data)
+                                alert("Lỗi: " + error.response.data.message);
+                            props.setLoading(false);
+                        })
+                        
 
                     callAPI('GET', '/api/receiving-forms')
                         .then(res => {
@@ -163,8 +178,16 @@ function ReceivingForm(props) {
                                 props.setLoading(false);
                             }
                         })
+                        .catch(error => {
+                            console.log(error.response);
+                            if(error.response && error.response.data)
+                                alert("Lỗi: " + error.response.data.message);
+                            props.setLoading(false);
+                        })
+
                 }
-            }).catch(error => {
+            })
+            .catch(error => {
                 if(error.response && error.response.data)
                     alert("Lỗi: " + error.response.data.message);
                 props.setLoading(false);

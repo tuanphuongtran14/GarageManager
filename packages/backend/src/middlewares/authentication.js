@@ -7,7 +7,7 @@ async function checkAuthentication(req, res, next) {
     if (!session) {
         return res.status(400).json({
             statusCode: 400,
-            error: 'You must login to access this'
+            message: 'You must login to access this'
         })
     }
     for (let i = 0; i < sessionList.length; i++) {
@@ -22,7 +22,7 @@ async function checkAuthentication(req, res, next) {
     else
         return res.status(400).json({
             statusCode: 400,
-            error: 'Fake session'
+            message: 'Fake session'
         })
 }
 
@@ -33,7 +33,7 @@ function checkAdmin(req, res, next) {
     else {
         return res.status(400).json({
             statusCode: 400,
-            error: 'Only admin can access this api'
+            message: 'Only admin can access this api'
         })
     }
 }

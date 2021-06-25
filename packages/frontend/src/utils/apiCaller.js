@@ -6,7 +6,4 @@ export default function apiCaller(method, url, data) {
         url,
         data
       })
-      .catch(err => {
-          console.log(err);
-      })
 }

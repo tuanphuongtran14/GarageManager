@@ -6,7 +6,7 @@ import CustomDropdownItem from './CustomDropdownItem';
 import './Navbar.css'
 
 export default function CustomNavbar() {
-  let username = JSON.parse(sessionStorage.getItem('userInfo')).username;
+  let username = sessionStorage.getItem('username');
 
   const displayUsername = () => {
     return(
@@ -34,7 +34,9 @@ export default function CustomNavbar() {
 
         <CustomDropdownNavLink to="/quan-ly-phu-tung" activeOnlyWhenExact={false} title="Quản lý phụ tùng" menuvariant="dark">
           <CustomDropdownItem to="/quan-ly-phu-tung/nhap-phu-tung" activeOnlyWhenExact={true} label={"Nhập vật tư phụ tùng"} />
-          <CustomDropdownItem to="/quan-ly-phu-tung/tra-cuu" activeOnlyWhenExact={true} label={"Tra cứu"} />
+          <CustomDropdownItem to="/quan-ly-phu-tung/tra-cuu" activeOnlyWhenExact={true} label={"Tra cứu phụ tùng"} />
+          <CustomDropdownItem to="/quan-ly-phu-tung/danh-sach-phu-tung" activeOnlyWhenExact={true} label={"Danh sách phụ tùng"} />
+          <CustomDropdownItem to="/quan-ly-phu-tung/danh-sach-tien-cong" activeOnlyWhenExact={true} label={"Danh sách tiền công"} />
         </CustomDropdownNavLink>
 
         <CustomDropdownNavLink to="/lap-bao-cao" activeOnlyWhenExact={true} title={"Lập báo cáo"}  menuvariant="dark">

@@ -5,25 +5,40 @@ import callAPI from '../../../utils/apiCaller';
 
 function ReceivingList(props) {
     const [receivingForms, setReceivingForms] = useState([]);
+    const [maxNumberOfReceivedCarInDay, setMaxNumberOfReceivedCarInDay] = useState(0);
 
     useEffect(() => {
         setReceivingForms(props.receivingList);
     })
+    
+    
+    // Fetch max number of received car in day
+    useEffect(() => {
+        callAPI('GET', '/api/parameters')
+            .then(response => {
+                setMaxNumberOfReceivedCarInDay(response.data[0].maxNumberOfReceivedCarInDay);
+            })
+            .catch(error => {
+                if(error.response && error.response.data)
+                    alert("Lỗi: " + error.response.data.message);
+            })
+    }, []);
 
     
-    const handleRefresh = (event) => {
+    const handleRefresh = event => {
+        event.preventDefault();
+
         callAPI('GET', '/api/receiving-forms')
-        .then(res => {
-            if (res && res.status === 200) {
-                props.fetchReceivingList(res.data);
-            }
-        })
+            .then(res => {
+                if (res && res.status === 200) {
+                    props.fetchReceivingList(res.data);
+                }
+            })
     };
    
     const receivingList = receivingForms.filter(receivingForm => {
         const today = new Date();
         const receivingDate = new Date(receivingForm.receivingDate);
-        console.log(today, receivingDate);
 
         if(today.getDate() !== receivingDate.getDate())
             return false;
@@ -37,6 +52,7 @@ function ReceivingList(props) {
         return true;
     })
 
+
     const receivingListComponents = receivingList.map((receivingForm, index) => {
     
         return (
@@ -48,7 +64,9 @@ function ReceivingList(props) {
         )
     }).reverse();
 
-    let processingStatus = Math.round((receivingList.length * 100)/30);
+
+    let processingStatus = Math.round((receivingList.length * 100)/maxNumberOfReceivedCarInDay);
+
 
     return (
         <>
@@ -69,11 +87,11 @@ function ReceivingList(props) {
             <div className="text-center mt-3">
                 <button type="submit" className="btn btn-primary" onClick={handleRefresh}><i className="fas fa-sync mr-2"></i> Làm mới</button>
             </div>
-                    <p className="text-center my-3">Garage chỉ tiếp nhận 30 xe mỗi ngày</p>
+                    <p className="text-center my-3">Garage chỉ tiếp nhận { maxNumberOfReceivedCarInDay } xe mỗi ngày</p>
                     <div className="receiving-status">
                         <div className="processing" style={{width: `${processingStatus}%`}} />
                     </div>
-                    <p className="text-center">Đã tiếp nhận {receivingList.length}/30 xe</p>
+                    <p className="text-center">Đã tiếp nhận {receivingList.length}/{ maxNumberOfReceivedCarInDay } xe</p>
         </>
     )
 }

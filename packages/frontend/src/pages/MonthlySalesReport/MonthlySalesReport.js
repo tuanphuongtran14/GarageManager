@@ -138,9 +138,9 @@ export default function MonthlySalesReport() {
                     <h4 className="text-center mb-4">Lập báo cáo doanh thu tháng</h4>
                     <div className="d-flex align-items-center justify-content-center mb-4">
                         <label className="mr-3" htmlFor>Tháng:</label>
-                        <input type="text" className="form-control search-form mr-5" name="month" id="month" aria-describedby="helpId" placeholder />
+                        <input type="text" className="form-control month-input mr-5" name="month" id="month" aria-describedby="helpId" placeholder />
                         <label className="mr-3" htmlFor>Năm:</label>
-                        <input type="text" className="form-control search-form mr-5" name="year" id="year" aria-describedby="helpId" placeholder />
+                        <input type="text" className="form-control year-input mr-5" name="year" id="year" aria-describedby="helpId" placeholder />
                         <button type="submit" className="btn btn-primary" onClick={ handleSubmit }>Lập báo cáo doanh thu</button>
                     </div>
                     { displayReport() }

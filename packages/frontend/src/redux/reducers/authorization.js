@@ -2,25 +2,31 @@ import * as types from '../constants/ActionTypes';
 
 let initialState = {
     isLogin: false,
-    token: "",
-    userInfo: {}
+    role: null
 };
 
-if(sessionStorage && sessionStorage.getItem('token') && sessionStorage.getItem('userInfo'))
+if(sessionStorage && sessionStorage.getItem('role'))
     initialState = {
         isLogin: true,
-        token: sessionStorage.getItem('token'),
-        userInfo: sessionStorage.getItem('userInfo')
+        role: sessionStorage.getItem('role')
     };
 
 let reducer = (state = initialState, action) => {
     switch(action.type) {
-        case types.SET_LOGIN: 
+        case types.SET_LOGIN:
+            sessionStorage.setItem('role', action.role);
             return {
                 ...state,
                 isLogin: true,
-                token: action.token,
-                userInfo: action.userInfo
+                role: action.role,
+            };
+        case types.LOGOUT:
+            sessionStorage.removeItem('role');
+            sessionStorage.removeItem('username');
+            return {
+                ...state,
+                isLogin: false,
+                role: null,
             };
         default:
             return state;
