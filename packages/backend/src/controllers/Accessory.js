@@ -1,5 +1,5 @@
 const { Accessory, Parameter } = require('../models');
-const { find, findOne, deleteOne, update } = require('../configs/controller.template.config')(Accessory);
+const { find, findOne, update } = require('../configs/controller.template.config')(Accessory);
 const AccessoryService = require('../configs/service.template.config')(Accessory);
 
 /* ````````````Declare your custom controller here `````````````````````*/
@@ -43,6 +43,25 @@ const create = async (req, res) => {
         return res.status(500).json({
             statusCode: 500,
             message: err.message || `Some errors happened when creating accessory`
+        });
+    }
+}
+
+const deleteOne = async (req, res) => {
+    let id = req.params.id;
+    try {
+        let document = await AccessoryService.deleteOne(id);
+
+        // update parameter
+        let parameter = await Parameter.findOne({});
+        parameter.numberOfAccessory -= 1;
+        await Parameter.update({}, parameter);
+
+        return res.status(200).json(document);
+    } catch (err) {
+        return res.status(500).json({
+            statusCode: 500,
+            message: err.message || `Some errors occur while deleting ${Model} with ID ${id}`
         });
     }
 }
