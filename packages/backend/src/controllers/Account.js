@@ -6,6 +6,8 @@ const AccountService = require('../services/Account');
 const AccountServiceTemplate = require('../configs/service.template.config')(Account);
 const SessionService = require('../configs/service.template.config')(Session);
 
+let saltRounds = 7;
+
 /* ````````````Declare your custom controller here `````````````````````*/
 
 
@@ -37,7 +39,7 @@ const create = async (req, res) => {
     }
 
     // Hash password and save in db
-    bcrypt.hash(formInput.password, 7, function (err, hashedPassword) {
+    bcrypt.hash(formInput.password, saltRounds, function (err, hashedPassword) {
         if (err)
             throw new Error(err);
         formInput.hashedPassword = hashedPassword;
@@ -130,9 +132,38 @@ const logOut = (req, res) => {
     });
 }
 
+const changePassword = async (req, res) => {
+    let input = req.body;
+    // validation new password
+    if (input.newPassword.length < 7) {
+        return res.status(400).json({
+            statusCode: 400,
+            error: 'New password must be at least 7 characters'
+        })
+    }
+
+    // check old password
+    let account = await AccountServiceTemplate.findOne(input.id);
+    let checkPassword = bcrypt.compareSync(input.oldPassword, account.hashedPassword);
+    if (checkPassword) {
+        let newHashedPassword = bcrypt.hashSync(input.newPassword, saltRounds);
+        account.hashedPassword = newHashedPassword;
+        await AccountServiceTemplate.update(input.id, account);
+        return res.status(200).json({
+            statusCode: 200,
+            message: 'Change password successfully'
+        })
+    }
+    return res.status(400).json({
+        statusCode: 400,
+        error: 'Wrong password'
+    });
+}
+
 module.exports = {
     create,
     login,
     logOut,
     sendRole,
+    changePassword
 }
