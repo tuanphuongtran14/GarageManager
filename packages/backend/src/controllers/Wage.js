@@ -1,5 +1,6 @@
-const { Wage } = require('../models');
-const { find, findOne, create, deleteOne, update } = require('../configs/controller.template.config')(Wage);
+const { Wage, Parameter } = require('../models');
+const { find, findOne, deleteOne, update } = require('../configs/controller.template.config')(Wage);
+const WageService = require('../configs/service.template.config')(Wage);
 
 /* ````````````Declare your custom controller here `````````````````````*/
 
@@ -17,6 +18,29 @@ const searchName = async (req, res) => {
         return res.status(500).json({
             statusCode: 500,
             message: err.message || `Some errors happened when finding wage`
+        });
+    }
+}
+
+const create = async (req, res) => {
+    let input = req.body;
+
+    // create new accessory
+    try {
+        await WageService.create(input);
+        // update parameter
+        let parameter = await Parameter.findOne({});
+        parameter.numberOfKindOfWage += 1;
+        await Parameter.update({}, parameter);
+
+        res.status(201).json({
+            statusCode: 201,
+            message: 'Create new wage successfully'
+        })
+    } catch (err) {
+        return res.status(500).json({
+            statusCode: 500,
+            message: err.message || `Some errors happened when creating wage`
         });
     }
 }

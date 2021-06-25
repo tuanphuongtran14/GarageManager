@@ -25,6 +25,14 @@ const create = async (req, res) => {
         return (repairVote.repairDate.getMonth() == input.month)
             && (repairVote.repairDate.getFullYear() == input.year);
     })
+
+    // check if no repair happened this month / year
+    if (repairVoteListInThisMonth.length == 0)
+        return res.status(400).json({
+            statusCode: 400,
+            message: 'No data found because no repair happened this time'
+        });
+
     let repairVoteDetailList = [];
     repairVoteListInThisMonth.forEach( repairVote => {
         repairVote.details.forEach( repairVoteDetail => {

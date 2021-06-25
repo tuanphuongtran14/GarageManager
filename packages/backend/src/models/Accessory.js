@@ -5,7 +5,7 @@ exports.initAccessory = function(mongoose) {
     const AccessorySchema = new Schema({
         name: String,
         unitPrice: Number,
-        remaining: Number
+        remaining: { type: Number, default: 0 }
     })
 
     // Create Accessory Model

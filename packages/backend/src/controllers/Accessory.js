@@ -1,6 +1,6 @@
-const { Accessory } = require('../models');
-const accessoryServices = require('../services/Accessory');
-const {find, findOne, create, deleteOne, update } = require('../configs/controller.template.config')(Accessory);
+const { Accessory, Parameter } = require('../models');
+const { find, findOne, deleteOne, update } = require('../configs/controller.template.config')(Accessory);
+const AccessoryService = require('../configs/service.template.config')(Accessory);
 
 /* ````````````Declare your custom controller here `````````````````````*/
 
@@ -8,7 +8,7 @@ const searchName = async (req, res) => {
     let query = req.query;
     try {
         let accessories = await Accessory.find({});
-        if(query.name)
+        if (query.name)
             accessories = accessories.filter(accessory => {
                 return nonAccentVietnamese(accessory.name.toLowerCase()).indexOf(nonAccentVietnamese(query.name.toLowerCase())) !== -1;
             })
@@ -18,6 +18,31 @@ const searchName = async (req, res) => {
         return res.status(500).json({
             statusCode: 500,
             message: err.message || `Some errors happened when finding accessory`
+        });
+    }
+}
+
+const create = async (req, res) => {
+    let input = req.body;
+    if (input.remaining) {
+        delete input['remaining'];
+    }
+    // create new accessory
+    try {
+        await AccessoryService.create(input);
+        // update parameter
+        let parameter = await Parameter.findOne({});
+        parameter.numberOfAccessory += 1;
+        await Parameter.update({}, parameter);
+
+        res.status(201).json({
+            statusCode: 201,
+            message: 'Create new accessory successfully'
+        })
+    } catch (err) {
+        return res.status(500).json({
+            statusCode: 500,
+            message: err.message || `Some errors happened when creating accessory`
         });
     }
 }
