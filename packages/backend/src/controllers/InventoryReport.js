@@ -124,13 +124,28 @@ const find = async (req, res) => {
 
 const findOne = async (req, res) => {
     try {
-        const id = req.params.id
+        const id = req.params.id;
         let objList = await InventoryReportService.findOne(id);
         return res.status(200).json(objList);
     } catch (err) {
         return res.status(500).json({
             statusCode: 500,
-            message: err.message || `Some errors occur while finding repair votes list`
+            message: err.message || `Some errors occur while finding inventory report list`
+        });
+    }
+}
+
+const deleteOne = async (req, res) => {
+    let id = req.params.id;
+    try {
+        await InventoryReportService.deleteOne(id);
+        return res.status(200).json({
+            message: 'Delete inventory report successfully'
+        })
+    } catch (err) {
+        return res.status(500).json({
+            statusCode: 500,
+            message: err.message || `Some errors occur while deleting inventory report`
         });
     }
 }
@@ -140,5 +155,6 @@ const findOne = async (req, res) => {
 module.exports = {
     find,
     findOne,
-    create
+    create,
+    deleteOne
 }

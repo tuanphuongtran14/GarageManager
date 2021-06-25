@@ -129,10 +129,26 @@ const findOne = async (req, res) => {
     }
 }
 
+const deleteOne = async (req, res) => {
+    let id = req.params.id;
+    try {
+        await SaleService.deleteOne(id);
+        return res.status(200).json({
+            message: 'Delete sale report successfully'
+        })
+    } catch (err) {
+        return res.status(500).json({
+            statusCode: 500,
+            message: err.message || `Some errors occur while deleting sale report`
+        });
+    }
+}
+
 /* `````````````````````````````````````````````````````````````````````*/
 
 module.exports = {
     find,
     findOne,
-    create
+    create,
+    deleteOne
 }

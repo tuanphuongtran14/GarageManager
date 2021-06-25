@@ -27,4 +27,8 @@ exports.findOne = (id) =>{
     return InventoryReport.findById(id).populate('reportDetails');
 }
 
+exports.deleteOne = (id) => {
+    return InventoryReport.deleteOne({ _id: id })
+}
+
 /* `````````````````````````````````` */
