@@ -19,13 +19,6 @@ const create = async (req, res) => {
     input.month -= 1;
     input.reportDetails = [];
 
-    // Find all repair vote details in this month/year
-    let repairVoteList = await RepairVoteService.find().lean();
-    let repairVoteListInThisMonth = repairVoteList.filter(repairVote => {
-        return (repairVote.repairDate.getMonth() == input.month)
-            && (repairVote.repairDate.getFullYear() == input.year);
-    })
-
     // check if no repair happened this month / year
     if (repairVoteListInThisMonth.length == 0)
         return res.status(400).json({
