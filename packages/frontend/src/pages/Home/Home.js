@@ -4,6 +4,7 @@ import Header from '../../components/Header/Header';
 import ReceivingCar from '../CarManager/ReceivingPage/ReceivingPage';
 import CreataRepairVotesPage from '../CarManager/CreateRepairVotesPage/CreateRepairVotesPage';
 import CarLookup from '../CarManager/Lookup/Lookup';
+import CarBrandList from '../CarManager/CarBrandList/CarBrandList';
 import CollectMoney from '../CollectMoney/CollectMoney';
 import MonthlySalesReport from '../MonthlySalesReport/MonthlySalesReport';
 import MonthlyInventoryReport from '../MonthlyInventoryReport/MonthlyInventoryReport';
@@ -15,7 +16,6 @@ import Setting from '../Setting/Setting';
 import Logout from '../Logout/Logout';
 
 export default function Home() {
-   
     return (
         <Router>
             <Header/>
@@ -25,6 +25,7 @@ export default function Home() {
                     </Route>
                     <Route path="/quan-ly-xe/tiep-nhan-xe" component={ReceivingCar} />
                     <Route path="/quan-ly-xe/lap-phieu-sua-chua" component={CreataRepairVotesPage} />
+                    <Route path="/quan-ly-xe/danh-sach-hieu-xe" component={CarBrandList} />
                     <Route path="/quan-ly-xe/tra-cuu-xe" component={CarLookup} />
                     <Route path="/thu-tien" component={CollectMoney} />
                     <Route path="/lap-bao-cao/doanh-thu-thang" component={MonthlySalesReport} />

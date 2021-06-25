@@ -1,5 +1,4 @@
 import * as types from '../constants/ActionTypes';
-import callAPI from '../../utils/apiCaller';
 
 let initialState = {
     receivingList: []

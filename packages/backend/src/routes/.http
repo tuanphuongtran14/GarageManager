@@ -2,7 +2,7 @@ POST http://localhost:8080/api/inventory-reports
 Content-Type: application/json
 
 {   
-    "month": 6,
+    "month": 3,
     "year": 2021
 }
 
@@ -11,8 +11,9 @@ POST http://localhost:8080/api/accounts/
 Content-Type: application/json
 
 {
-    "name": "huuphatarsenal2000",
-    "password": "arsenal2000"
+    "id": "huuphatarsenal2000",
+    "oldPassword": "arsenal2000",
+    "newPassword": "dsafsdaf"
 }
 
 ###
