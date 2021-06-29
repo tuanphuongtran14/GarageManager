@@ -167,7 +167,7 @@ export default function CarBrandList() {
     // Function for handling click delete button
     const hanldeClickDeleteButton = (event, carBrand) => {
         event.preventDefault()
-        if(window.confirm("Bạn có chắc muốn xóa loại tiền công này?")) {
+        if(window.confirm("Bạn có chắc muốn xóa loại hiệu xe này?")) {
             // Turn on loading screen
             setLoading(true);
 
@@ -233,7 +233,7 @@ export default function CarBrandList() {
                             <thead className="thead-dark sticky-top" style={{ zIndex: '0.5' }}>
                                 <tr>
                                     <th>STT</th>
-                                    <th>Tên tiền công</th>
+                                    <th>Tên hiệu xe</th>
                                     <th className="text-center">Thao tác</th>
                                 </tr>
                             </thead>

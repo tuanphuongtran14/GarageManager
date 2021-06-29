@@ -47,3 +47,10 @@ body {
   z-index: 990!important;
 }
 
+.sticky-top {
+  z-index: 1!important;
+}
+
+.css-26l3qy-menu {
+  z-index: 30!important;
+}

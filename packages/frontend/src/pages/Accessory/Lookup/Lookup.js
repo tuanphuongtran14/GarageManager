@@ -96,7 +96,7 @@ export default function Lookup() {
                     </div>
                     <div className="list mt-4">
                         <table className="table">
-                            <thead className="thead-dark sticky-top" style={{ zIndex: '0' }}>
+                            <thead className="thead-dark sticky-top" style={{ zIndex: '0!important' }}>
                                 <tr>
                                     <th>STT</th>
                                     <th>Tên phụ tùng</th>

@@ -48,6 +48,13 @@ export default function CustomNavbar() {
     }
   }
 
+  const displayCarBrandOnlyAdmin = () => {
+    if(sessionStorage.getItem('role') === 'Admin') {
+      return (
+        <CustomDropdownItem to="/quan-ly-xe/danh-sach-hieu-xe" activeOnlyWhenExact={false} label={"Danh sách hiệu xe"} />
+      )
+    }
+  }
 
 
   return (
@@ -59,7 +66,8 @@ export default function CustomNavbar() {
         <CustomDropdownNavLink to="/quan-ly-xe" activeOnlyWhenExact={false} title="Quản lý xe" menuvariant="dark">
           <CustomDropdownItem to="/quan-ly-xe/tiep-nhan-xe" activeOnlyWhenExact={false} label="Tiếp nhận xe" />
           <CustomDropdownItem to="/quan-ly-xe/lap-phieu-sua-chua" activeOnlyWhenExact={false} label={"Lập phiếu sửa chữa"} />
-          <CustomDropdownItem to="/quan-ly-xe/tra-cuu-xe" activeOnlyWhenExact={false} label={"Tra cứu"} />
+          <CustomDropdownItem to="/quan-ly-xe/tra-cuu-xe" activeOnlyWhenExact={false} label={"Tra cứu xe"} />
+          { displayCarBrandOnlyAdmin() }
         </CustomDropdownNavLink>
 
         <CustomNavLink to="/thu-tien" activeOnlyWhenExact={false} label={"Thu tiền"} />
