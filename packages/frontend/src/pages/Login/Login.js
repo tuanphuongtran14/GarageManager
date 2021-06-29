@@ -2,7 +2,7 @@ import React from 'react'
 import './Login.css';
 import { connect } from 'react-redux';
 import * as actions from '../../redux/actions/index'
-import { useHistory } from 'react-router-dom'
+import { useHistory, Link } from 'react-router-dom'
 import axios from 'axios';
 
 function Login(props) {
@@ -61,8 +61,7 @@ function Login(props) {
           </div>
           <button type="submit" className="btn btn-success w-100 my-3" onClick={login}>Đăng nhập</button>
         </form>
-        <p className="text-center">Chưa có tài khoản? <a href="/">Đăng kí ngay</a></p>
-        <p className="text-center"><a href="/">Quên mật khẩu</a></p>
+        <p className="text-center">Chưa có tài khoản? <Link to="/dang-ki">Đăng kí ngay</Link></p>
       </div>
     </div>
   )

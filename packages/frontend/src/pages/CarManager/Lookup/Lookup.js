@@ -176,7 +176,7 @@ export default function Lookup() {
           </div>
           <div className="result-list my-3">
             <table className="table table--custom">
-              <thead className="thead-dark sticky-top" style={{ zIndex: 0.5 }}>
+              <thead className="thead-dark sticky-top" style={{ zIndex: 1 }}>
                 <tr>
                   <th>STT</th>
                   <th>Biển số</th>
@@ -187,7 +187,7 @@ export default function Lookup() {
                   <th className="text-center">Thao tác</th>
                 </tr>
               </thead>
-              <tbody className="parent" >
+              <tbody className="parent" style={{ zIndex: "0" }}>
                 {displayResultLoading()}
                 {resultTable}
               </tbody>

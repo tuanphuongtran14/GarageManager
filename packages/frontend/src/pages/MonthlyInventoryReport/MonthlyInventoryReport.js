@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 import print from 'print-js';
 import './MonthlyInventoryReport.css';
@@ -8,19 +9,27 @@ export default function MonthlyInventoryReport() {
     const [loading, setLoading] = useState(false);
     // Other state
     const [report, setReport] = useState(null);
+    // Other variable
+    const history = useHistory();
 
     const handleSubmit = event => {
         event.preventDefault();
         // -- Turn on loading screen --
         setLoading(true);
 
+        // -- Get today --
+        const today = new Date();
+        const month = today.getMonth() + 1;
+        const year = today.getFullYear();
+        console.log(month, year)
+
         // -- Create report --
         axios({
             method: 'POST',
             url: '/api/inventory-reports',
             data: {
-                month: document.getElementById("month").value,
-                year: document.getElementById("year").value,
+                month,
+                year,
             }
         })
             .then(response => {
@@ -128,6 +137,10 @@ export default function MonthlyInventoryReport() {
         });
     }
 
+    if(sessionStorage.getItem('role') !== 'Admin') {
+        alert("Bạn không có quyền truy cập đường dẫn này");
+        history.push('/');
+    }
 
     return (
         <>
@@ -135,11 +148,7 @@ export default function MonthlyInventoryReport() {
                 <div className="box">
                     <h4 className="text-center mb-4">Lập báo cáo tồn tháng</h4>
                     <div className="d-flex align-items-center justify-content-center mb-4">
-                        <label className="mr-3" htmlFor>Tháng:</label>
-                        <input type="text" className="form-control month-input mr-5" name="month" id="month" aria-describedby="helpId" placeholder />
-                        <label className="mr-3" htmlFor>Năm:</label>
-                        <input type="text" className="form-control year-input mr-5" name="year" id="year" aria-describedby="helpId" placeholder />
-                        <button type="submit" className="btn btn-primary" onClick={handleSubmit}>Lập báo cáo doanh thu</button>
+                        <button type="submit" className="btn btn-primary" onClick={handleSubmit}>Lập báo cáo ngay</button>
                     </div>
                     {displayReport()}
                 </div>

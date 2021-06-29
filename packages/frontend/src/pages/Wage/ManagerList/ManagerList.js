@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import './ManagerList.css';
 import axios from 'axios';
 
@@ -8,6 +9,8 @@ export default function ManagerList() {
     // Others state
     const [wages, setWages] = useState([]);
     const [editedWageId, setEditedWageId] = useState(null);
+    // Other variables
+    const history = useHistory();
 
     // Fetch data function
     const fetchData = name => {
@@ -65,7 +68,7 @@ export default function ManagerList() {
                     <td>{wage.name}</td>
                     <td className="text-center">{wage.price.toLocaleString("DE-de")}đ</td>
                     <td className="text-center">
-                        <button className="btn" onClick={event => hanldeClickDeleteButton(event, wage)}><i className="fas fa-trash text-danger" aria-hidden="true" /></button>
+                        <button className="btn" onClick={event => hanldeClickDeleteButton(event, wage)}><i className="fas fa-trash text-danger"></i></button>
                         <button className="btn" onClick={event => handleClickEdit(event, wage)}><i className="fas fa-edit text-success"></i></button>
                     </td>
                 </tr>
@@ -200,6 +203,12 @@ export default function ManagerList() {
     useEffect(() => {
         fetchData();
     }, []);
+
+    
+    if(sessionStorage.getItem('role') !== 'Admin') {
+        alert("Bạn không có quyền truy cập đường dẫn này");
+        history.push('/');
+    } 
 
 
     return (

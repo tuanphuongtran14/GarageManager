@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import Select from 'react-select';
 import axios from 'axios';
 
@@ -136,7 +137,7 @@ export default function ImportAccessory() {
                             </div>
                         </div>
                     </div>
-                    <p className="mt-2 form-text text-muted"><i className="fa fa-info-circle" aria-hidden="true" />&nbsp; Để nhập loại phụ tùng mới, bạn vui lòng thêm phụ tùng đó vào danh sách của garage tại đây</p>
+                    <p className="mt-2 form-text text-muted"><i className="fa fa-info-circle" aria-hidden="true" />&nbsp; Để nhập loại phụ tùng mới, bạn vui lòng thêm phụ tùng đó vào danh sách của garage <Link to="/quan-ly-phu-tung/danh-sach-phu-tung">tại đây</Link></p>
                 </div>
             </div>
         </>

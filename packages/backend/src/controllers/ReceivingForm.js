@@ -14,8 +14,8 @@ const create = async (req, res) => {
     }
 
     // Check car is in garage or not
-    const car = await Car.findOne({ licensePlate: formInput.licensePlate });
-    if (car && car.status === true) {
+    const car = await Car.findOne({ licensePlate: formInput.licensePlate, status: true });
+    if (car) {
         return res.status(400).json({
             statusCode: 400,
             message: 'Car is already in garage'

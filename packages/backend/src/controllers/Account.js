@@ -28,13 +28,13 @@ const create = async (req, res) => {
     if (formInput.name.length < 7) {
         return res.status(400).json({
             statusCode: 400,
-            error: 'Your account must be at least 7 characters'
+            message: 'Your account must be at least 7 characters'
         })
     }
     if (formInput.password.length < 7) {
         return res.status(400).json({
             statusCode: 400,
-            error: 'Your password must be at least 7 characters'
+            message: 'Your password must be at least 7 characters'
         })
     }
 
@@ -116,7 +116,7 @@ const sendRole = async (req, res) => {
             }
         }
         return res.status(400).json({
-            error: 'Fake session'
+            message: 'Fake session'
         });
     } catch (err) {
         return res.status(500).json({
@@ -140,7 +140,7 @@ const changePassword = async (req, res) => {
     if (input.newPassword.length < 7) {
         return res.status(400).json({
             statusCode: 400,
-            error: 'New password must be at least 7 characters'
+            message: 'New password must be at least 7 characters'
         })
     }
 
@@ -160,7 +160,7 @@ const changePassword = async (req, res) => {
     // if old password is wrong
     return res.status(400).json({
         statusCode: 400,
-        error: 'Wrong password'
+        message: 'Wrong password'
     });
 }
 
@@ -177,7 +177,7 @@ const getUserId = async (req, res) => {
             }
         }
         return res.status(400).json({
-            error: 'Fake session'
+            message: 'Fake session'
         });
     } catch (err) {
         return res.status(500).json({

@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 import print from 'print-js';
 import './MonthlySalesReport.css';
@@ -8,6 +9,8 @@ export default function MonthlySalesReport() {
     const [loading, setLoading] = useState(false);
     // Other state
     const [report, setReport] = useState(null);
+    // Other variable
+    const history = useHistory();
 
     const handleSubmit = event => {
         event.preventDefault();
@@ -131,6 +134,11 @@ export default function MonthlySalesReport() {
     }
 
     
+    if(sessionStorage.getItem('role') !== 'Admin') {
+        alert("Bạn không có quyền truy cập đường dẫn này");
+        history.push('/');
+    } 
+
     return (
         <>
             <div className="container parent">

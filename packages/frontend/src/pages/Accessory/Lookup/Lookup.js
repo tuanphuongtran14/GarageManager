@@ -16,13 +16,18 @@ export default function Lookup() {
 
 
     // Fetch data function
-    const fetchData = () => {
+    const fetchData = name => {
+        let query = '?';
+
+        if(name) 
+            query += `name=${name}`;
+
         // Turn on loading screen
         setLoading(true);
 
         axios({
             method: "GET",
-            url: "/api/accessories"
+            url: `/api/accessories/search${query}`
         })
             .then(response => {
                 setAccessories(response.data);
@@ -64,37 +69,39 @@ export default function Lookup() {
                 <tr>
                     <td>{ (index + 1).toString().padStart(3, 0) }</td>
                     <td>{ accessory.name }</td>
-                    <td className="text-center">{ accessory.unitPrice.toLocaleString() }</td>
+                    <td className="text-center">{ accessory.unitPrice.toLocaleString("DE-de") + 'đ' }</td>
                     <td className="text-center">{ accessory.remaining }</td>
-                    <td className="text-center">
-                        <button className="btn"><i className="fa fa-trash text-danger" aria-hidden="true" /></button>
-                        <button className="btn"><i className="fa fa-pencil-square-o text-success" aria-hidden="true" /></button>
-                    </td>
                 </tr>
             )
         })
     }
+    
+    const handleSubmitSearch = event => {
+        event.preventDefault();
+        const nameInput = document.getElementById('name');
 
+        fetchData(nameInput.value);
+    }
 
     return (
         <>
             <div className="container parent">
                 { displayLoading() }
                 <div className="box">
+                    <h4 className="text-center mb-4">Tra cứu phụ tùng</h4>
                     <div className="d-flex align-items-center">
                         <label className="mr-3" htmlFor>Tên phụ tùng:</label>
-                        <input type="text" className="form-control search-form mr-5" name id aria-describedby="helpId" placeholder />
-                        <button type="submit" className="btn btn-primary">Tìm ngay</button>
+                        <input type="text" className="form-control search-form mr-5" id="name" aria-describedby="helpId" placeholder />
+                        <button type="submit" className="btn btn-primary" onClick={handleSubmitSearch}>Tìm ngay</button>
                     </div>
                     <div className="list mt-4">
                         <table className="table">
-                            <thead className="thead-dark sticky-top" style={{ zIndex: '0.5' }}>
+                            <thead className="thead-dark sticky-top" style={{ zIndex: '0' }}>
                                 <tr>
                                     <th>STT</th>
                                     <th>Tên phụ tùng</th>
                                     <th className="text-center">Đơn giá</th>
                                     <th className="text-center">Số lượng còn</th>
-                                    <th className="text-center">Thao tác</th>
                                 </tr>
                             </thead>
                             <tbody>

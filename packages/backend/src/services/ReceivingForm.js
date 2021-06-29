@@ -50,6 +50,9 @@ exports.create = async formInput => {
             throw new Error(`Customer is not car owner`);
         }
     }
+
+    car.status = true;
+    await car.save();
  
     // Create new receiving form
     let receivingForm = await new ReceivingForm({

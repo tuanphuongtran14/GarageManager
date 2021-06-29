@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 import './Setting.css'
 
@@ -7,6 +8,8 @@ export default function Setting() {
     const [loading, setLoading] = useState(true);
     // Others state
     const [parameters, setParameters] = useState({});
+    // Others variable
+    const history = useHistory();
 
 
     // Fetch data function 
@@ -90,10 +93,35 @@ export default function Setting() {
     }
 
 
+    // Function for handling change number of car brands
+    const changeNumberOfCarBrand = event => {
+        event.preventDefault();
+        history.push('/quan-ly-xe/danh-sach-hieu-xe');
+    }
+
+
+    // Function for handling change number of accessory
+    const changeNumberOfAccessory = event => {
+        event.preventDefault();
+        history.push('/quan-ly-phu-tung/danh-sach-phu-tung');
+    }
+
+
+    // Function for handling cha
+    const changeNumberOfKindOfWage = event => {
+        event.preventDefault();
+        history.push('/quan-ly-phu-tung/danh-sach-tien-cong');
+    }
     // Fetch data first time 
     useEffect(() => {
         fetchData();
     }, [])
+
+    
+    if(sessionStorage.getItem('role') !== 'Admin') {
+        alert("Bạn không có quyền truy cập đường dẫn này");
+        history.push('/');
+    } 
 
 
     return (
@@ -125,7 +153,7 @@ export default function Setting() {
                                     </div>
                                 </div>
                                 <div className="col-4">
-                                    <button type="submit" className="btn btn-primary w-100">Chỉnh sửa danh sách</button>
+                                    <button type="submit" className="btn btn-primary w-100" onClick={changeNumberOfCarBrand}>Chỉnh sửa danh sách</button>
                                 </div>
                             </div>
                             <div className="col-12 row d-flex justify-content-center">
@@ -136,7 +164,7 @@ export default function Setting() {
                                     </div>
                                 </div>
                                 <div className="col-4">
-                                    <button type="submit" className="btn btn-primary w-100">Chỉnh sửa danh sách</button>
+                                    <button type="submit" className="btn btn-primary w-100" onClick={changeNumberOfAccessory}>Chỉnh sửa danh sách</button>
                                 </div>
                             </div>
                             <div className="col-12 row d-flex justify-content-center">
@@ -147,10 +175,10 @@ export default function Setting() {
                                     </div>
                                 </div>
                                 <div className="col-4">
-                                    <button type="submit" className="btn btn-primary w-100">Chỉnh sửa danh sách</button>
+                                    <button type="submit" className="btn btn-primary w-100" onClick={changeNumberOfKindOfWage}>Chỉnh sửa danh sách</button>
                                 </div>
                             </div>
-                            <div className="col-12 row mx-0 px-0">
+                            {/* <div className="col-12 row mx-0 px-0">
                                 <div className="col-5 d-flex align-items-center">
                                     <label htmlFor="customSwitch1">Cho phép thu tiền lớn hơn số
                                         nợ: </label>
@@ -161,7 +189,7 @@ export default function Setting() {
                                         <span className="slider round" />
                                     </label>
                                 </div>
-                            </div>
+                            </div> */}
                         </div>
                     </div>
                 </div>
