@@ -46,7 +46,7 @@ export default function ManagerList() {
     const displayLoading = () => {
         if (loading) {
             return (
-                <div className="container loading" style={{ zIndex: 100000 }}>
+                <div className="container loading" style={{ zIndex: 0 }}>
                     <div className="spinner-grow text-primary" role="status">
                         <span className="sr-only">Loading...</span>
                     </div>
