@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import './CarBrandList.css';
 import axios from 'axios';
 
@@ -8,6 +9,8 @@ export default function CarBrandList() {
     // Others state
     const [carBrands, setCarBrands] = useState([]);
     const [editedCarBrandId, setEditedCarBrandId] = useState(null);
+    // Other variables
+    const history = useHistory();
 
     // Fetch data function
     const fetchData = name => {
@@ -64,7 +67,7 @@ export default function CarBrandList() {
                     <td>{(index + 1).toString().padStart(3, 0)}</td>
                     <td>{carBrand.name}</td>
                     <td className="text-center">
-                        <button className="btn" onClick={event => hanldeClickDeleteButton(event, carBrand)}><i className="fas fa-trash text-danger" aria-hidden="true" /></button>
+                        <button className="btn" onClick={event => hanldeClickDeleteButton(event, carBrand)}><i className="fas fa-trash text-danger"></i></button>
                         <button className="btn" onClick={event => handleClickEdit(event, carBrand)}><i className="fas fa-edit text-success"></i></button>
                     </td>
                 </tr>
@@ -195,13 +198,18 @@ export default function CarBrandList() {
         fetchData();
     }, []);
 
+    if(sessionStorage.getItem('role') !== 'Admin') {
+        alert("Bạn không có quyền truy cập đường dẫn này");
+        history.push('/');
+    }
+
 
     return (
         <>
             <div className="container parent">
                 {displayLoading()}
                 <div className="box">
-                    <h4 className="text-center mb-4">Thêm loại hiệu mới</h4>
+                    <h4 className="text-center mb-4">Thêm loại hiệu xe mới</h4>
                     <div className="row mx-0">
                         <div className="col-4">
                             <div className="form-group">
@@ -216,7 +224,7 @@ export default function CarBrandList() {
                     </div>
                     <hr className="hr--custom" />
                     <div className="d-flex align-items-center">
-                        <label className="mr-3" htmlFor>Tên tiền công:</label>
+                        <label className="mr-3" htmlFor>Tên hiệu xe:</label>
                         <input type="text" className="form-control search-input mr-5" name="searchInput" id="searchInput" aria-describedby="helpId" placeholder />
                         <button type="submit" className="btn btn-primary" onClick={handleSubmitSearch}>Tìm ngay</button>
                     </div>

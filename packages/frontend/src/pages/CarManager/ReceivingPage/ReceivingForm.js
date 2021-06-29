@@ -252,7 +252,7 @@ function ReceivingForm(props) {
 
                 <div className="form-group">
                     <label>Ngày tiếp nhận</label>
-                    <input type="date" id="receivingDate" name="receivingDate" disabled className="form-control" onBlur={handleReceivingDateOnChange} />
+                    <input type="date" id="receivingDate" name="receivingDate" className="form-control" onBlur={handleReceivingDateOnChange} />
                 </div>
                 <div className="d-flex justify-content-between mt-4">
                     <button type="submit" className="btn btn-success w-50" onClick={handleSubmit}>Gửi ngay</button>

@@ -6,7 +6,7 @@ export default function Lookup() {
     // Loading screen state 
     const [loading, setLoading] = useState(true);
     // Others state
-    const [accessories, setAccessories] = useState([]);
+    const [wages, setWages] = useState([]);
 
 
     // Fetch data first time
@@ -27,10 +27,10 @@ export default function Lookup() {
 
         axios({
             method: "GET",
-            url: `/api/accessories/search${query}`
+            url: `/api/wages/search${query}`
         })
             .then(response => {
-                setAccessories(response.data);
+                setWages(response.data);
 
                 // Turn off loading screen
                 setLoading(false);
@@ -64,18 +64,17 @@ export default function Lookup() {
     };
 
     const displayResultTableRows = () => {
-        return accessories.map((accessory, index) => {
+        return wages.map((wage, index) => {
             return (
                 <tr>
                     <td>{ (index + 1).toString().padStart(3, 0) }</td>
-                    <td>{ accessory.name }</td>
-                    <td className="text-center">{ accessory.unitPrice.toLocaleString("DE-de") + 'đ' }</td>
-                    <td className="text-center">{ accessory.remaining }</td>
+                    <td>{ wage.name }</td>
+                    <td className="text-center">{ wage.price.toLocaleString("DE-de") + 'đ' }</td>
                 </tr>
             )
         })
     }
-    
+
     const handleSubmitSearch = event => {
         event.preventDefault();
         const nameInput = document.getElementById('name');
@@ -83,15 +82,16 @@ export default function Lookup() {
         fetchData(nameInput.value);
     }
 
+
     return (
         <>
             <div className="container parent">
                 { displayLoading() }
                 <div className="box">
-                    <h4 className="text-center mb-4">Tra cứu phụ tùng</h4>
+                    <h4 className="text-center mb-4">Tra cứu tiền công</h4>
                     <div className="d-flex align-items-center">
-                        <label className="mr-3" htmlFor>Tên phụ tùng:</label>
-                        <input type="text" className="form-control search-form mr-5" id="name" aria-describedby="helpId" placeholder />
+                        <label className="mr-3" htmlFor>Tên tiền công:</label>
+                        <input type="text" className="form-control search-form mr-5" id="name" aria-describedby="helpId" />
                         <button type="submit" className="btn btn-primary" onClick={handleSubmitSearch}>Tìm ngay</button>
                     </div>
                     <div className="list mt-4">
@@ -99,9 +99,8 @@ export default function Lookup() {
                             <thead className="thead-dark sticky-top" style={{ zIndex: '0' }}>
                                 <tr>
                                     <th>STT</th>
-                                    <th>Tên phụ tùng</th>
-                                    <th className="text-center">Đơn giá</th>
-                                    <th className="text-center">Số lượng còn</th>
+                                    <th>Tên tiền công</th>
+                                    <th className="text-center">Giá</th>
                                 </tr>
                             </thead>
                             <tbody>

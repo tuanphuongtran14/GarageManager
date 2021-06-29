@@ -117,6 +117,12 @@ export default function Setting() {
         fetchData();
     }, [])
 
+    
+    if(sessionStorage.getItem('role') !== 'Admin') {
+        alert("Bạn không có quyền truy cập đường dẫn này");
+        history.push('/');
+    } 
+
 
     return (
         <>

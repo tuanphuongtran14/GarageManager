@@ -27,6 +27,13 @@ const create = async (req, res) => {
     if (input.remaining) {
         delete input['remaining'];
     }
+
+    if(!input.unitPrice || input.unitPrice < 0)
+        return res.status(400).send({
+            statusCode: 400,
+            message: 'Unit price cannot be less than 0'
+        })
+
     // create new accessory
     try {
         await AccessoryService.create(input);

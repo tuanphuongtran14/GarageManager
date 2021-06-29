@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import print from 'print-js';
 import Select from 'react-select';
 import axios from 'axios';
 
@@ -36,6 +37,7 @@ export default function CollectMoney() {
         var minDate = year + '-' + month + '-' + day;
 
         document.getElementById('collectDate').setAttribute('min', minDate);
+        document.getElementById('collectDate').setAttribute('value', minDate);
     })
 
     // Fetch cars list from API
@@ -101,7 +103,7 @@ export default function CollectMoney() {
       let length = cars.length;
       let tmp;
 
-      if(selectedOption)
+      if(selectedOption) {
         for (let i = 0; i < length; i++)
           if(selectedOption.value === cars[i]._id) {
             setSelectedCar(cars[i]);
@@ -109,9 +111,10 @@ export default function CollectMoney() {
             break;
           }
 
-      document.getElementById('customerName').value = tmp.carOwner.name;
-      document.getElementById('phoneNumber').value = tmp.carOwner.phoneNumber;
-      document.getElementById('email').value = tmp.carOwner.email;
+          document.getElementById('customerName').value = tmp.carOwner.name;
+          document.getElementById('phoneNumber').value = tmp.carOwner.phoneNumber;
+          document.getElementById('email').value = tmp.carOwner.email;
+      }
     }
 
     // Display selected car debt
@@ -142,12 +145,42 @@ export default function CollectMoney() {
           data: data
         })
           .then(response => {
-            alert("Thu tiền thành công!!!");
-            // -- Turn off loading screen --
-            setLoading(false);
+            alert("Thu tiền thành công!!! Vui lòng nhận phiếu in");
 
             // -- Fetch new data --
             fetchCarList();
+
+            // -- Turn off loading screen --
+            setLoading(false);
+
+            // Print bill
+            const printData = [{
+              collectDate: document.getElementById('collectDate').value,
+              amount: document.getElementById("amount").value,
+              debt: selectedCar.debt - document.getElementById("amount").value
+            }]
+
+            console.log(printData);
+            
+            print({
+                printable: printData,
+                type: 'json',
+                properties: [
+                  { field: 'collectDate', displayName: 'Ngày thu tiền'},
+                  { field: 'amount', displayName: 'Số tiền thu'},
+                  { field: 'debt', displayName: 'Nợ còn lại'}
+                ],
+                header: `
+                  <h3 class="text-center">Phiếu thu tiền</h3>
+                  <p>Xe: ${ selectedCar.licensePlate }</>
+                  <p>Chủ xe: ${ document.getElementById('customerName').value }</>
+                  <p>Số điện thoại: ${ document.getElementById('phoneNumber').value }</>
+                  <p>Email: ${ document.getElementById('email').value }</>
+                `,
+                style: '.text-center { text-align: center; }'
+            });
+
+            
           })
           .catch(error => {
             if(error.response && error.response.data)
@@ -162,6 +195,7 @@ export default function CollectMoney() {
     const handleResetForm = event => {
       carSelect.select.clearValue();
     }
+
 
     return (
         <div className="container parent">

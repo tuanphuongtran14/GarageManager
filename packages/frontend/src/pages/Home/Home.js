@@ -10,11 +10,13 @@ import MonthlySalesReport from '../MonthlySalesReport/MonthlySalesReport';
 import MonthlyInventoryReport from '../MonthlyInventoryReport/MonthlyInventoryReport';
 import ImportAccessories from '../Accessory/ImportAccessories/ImportAccessories';
 import AccessoryLookup from '../Accessory/Lookup/Lookup';
+import WageLookup from '../Wage/Lookup/Lookup';
 import ManagerAccessoryList from '../Accessory/ManagerList/ManagerList';
 import ManagerWageList from '../Wage/ManagerList/ManagerList';
 import Setting from '../Setting/Setting';
 import ChangePassword from '../ChangePassword/ChangePassword';
 import Logout from '../Logout/Logout';
+import NotFound from '../NotFound/NotFound';
 
 export default function Home() {
     return (
@@ -33,11 +35,13 @@ export default function Home() {
                     <Route path="/lap-bao-cao/ton-phu-tung" component={MonthlyInventoryReport} />
                     <Route path="/quan-ly-phu-tung/nhap-phu-tung" component={ImportAccessories} />
                     <Route path="/quan-ly-phu-tung/tra-cuu" component={AccessoryLookup} />
+                    <Route path="/quan-ly-phu-tung/tien-cong" component={WageLookup} />
                     <Route path="/quan-ly-phu-tung/danh-sach-phu-tung" component={ManagerAccessoryList} />
                     <Route path="/quan-ly-phu-tung/danh-sach-tien-cong" component={ManagerWageList} />
                     <Route path="/cai-dat" component={Setting} />
                     <Route path="/dang-xuat" component={Logout} />
                     <Route path="/doi-mat-khau" component={ChangePassword} />
+                    <Route component={NotFound} />
                 </Switch>
             {/* <Footer/> */}
         </Router>

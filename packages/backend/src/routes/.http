@@ -2,7 +2,7 @@ POST http://localhost:8080/api/inventory-reports
 Content-Type: application/json
 
 {   
-    "month": 3,
+    "month": 6,
     "year": 2021
 }
 

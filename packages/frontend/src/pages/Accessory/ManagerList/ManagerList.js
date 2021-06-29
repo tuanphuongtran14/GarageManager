@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import './ManagerList.css';
 import axios from 'axios';
 
@@ -8,6 +9,8 @@ export default function ManagerList() {
     // Others state
     const [accessories, setAccessories] = useState([]);
     const [editedAccessoryId, setEditedAccessoryId] = useState(null);
+    // Other variables
+    const history = useHistory();
 
     // Fetch data function
     const fetchData = name => {
@@ -96,11 +99,26 @@ export default function ManagerList() {
     // Function for handling click add button
     const handleClickSubmit = event => {
         event.preventDefault();
+        const nameInput = document.getElementById("name");
+        const unitPriceInput = document.getElementById("unitPrice");
+
         const btn = document.getElementById("submitBtn");
         if (btn.innerText === "Thêm mới") {
+            // Check name is empty or not
+            if(!nameInput.value) {
+                alert("Bạn chưa nhập tên phụ tùng!");
+                return;
+            }
+
+            // Check unit price is empty or not
+            if(!unitPriceInput.value) {
+                alert("Bạn chưa nhập đơn giá phụ tùng!")
+                return;
+            }
+
             const newAccessory = {
-                name: document.getElementById("name").value,
-                unitPrice: document.getElementById("unitPrice").value,
+                name: nameInput.value,
+                unitPrice: unitPriceInput.value,
                 remaining: 0
             };
 
@@ -129,8 +147,8 @@ export default function ManagerList() {
                 });
         } else {
             const updateContent = {
-                name: document.getElementById("name").value,
-                unitPrice: document.getElementById("unitPrice").value
+                name: nameInput.value,
+                unitPrice: unitPriceInput.value,
             };
 
             // Turn on loading screen
@@ -164,8 +182,8 @@ export default function ManagerList() {
             setEditedAccessoryId(null);
 
             // Reset form
-            document.getElementById("name").value = '';
-            document.getElementById("unitPrice").value = '';
+            nameInput.value = '';
+            unitPriceInput.value = '';
         }
     }
 
@@ -203,6 +221,10 @@ export default function ManagerList() {
         fetchData();
     }, []);
 
+    if(sessionStorage.getItem('role') !== 'Admin') {
+        alert("Bạn không có quyền truy cập đường dẫn này");
+        history.push('/');
+    } 
 
     return (
         <>
