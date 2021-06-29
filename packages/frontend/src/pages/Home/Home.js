@@ -13,6 +13,7 @@ import AccessoryLookup from '../Accessory/Lookup/Lookup';
 import ManagerAccessoryList from '../Accessory/ManagerList/ManagerList';
 import ManagerWageList from '../Wage/ManagerList/ManagerList';
 import Setting from '../Setting/Setting';
+import ChangePassword from '../ChangePassword/ChangePassword';
 import Logout from '../Logout/Logout';
 
 export default function Home() {
@@ -36,6 +37,7 @@ export default function Home() {
                     <Route path="/quan-ly-phu-tung/danh-sach-tien-cong" component={ManagerWageList} />
                     <Route path="/cai-dat" component={Setting} />
                     <Route path="/dang-xuat" component={Logout} />
+                    <Route path="/doi-mat-khau" component={ChangePassword} />
                 </Switch>
             {/* <Footer/> */}
         </Router>

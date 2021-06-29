@@ -1,14 +1,17 @@
 var express = require('express');
 var router = express.Router();
-const { create, find, findOne } = require('../controllers/InventoryReport');
+const { create, find, findOne, deleteOne } = require('../controllers/InventoryReport');
 
-/* GET find car brands list */
+/* GET find one inventory report list */
 router.get('/:id', findOne);
 
-/* GET find car brands list */
+/* DELTE one inventory report */
+router.delete('/:id', deleteOne);
+
+/* GET find inventory report */
 router.get('/', find);
 
-/* POST create new car brand */
+/* POST create new inventory report */
 router.post('/', create);
 
 

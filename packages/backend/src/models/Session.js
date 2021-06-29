@@ -5,6 +5,7 @@ exports.initSession = function(mongoose) {
     const SessionSchema = new Schema({
         sessionId: String,
         role: String,
+        userId: String,
     });
 
     // Create Account Model

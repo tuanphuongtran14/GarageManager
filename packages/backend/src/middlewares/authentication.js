@@ -3,7 +3,7 @@ const { Session } = require('../models');
 async function checkAuthentication(req, res, next) {
     let sessionList = await Session.find({}).lean();
     let session = req.signedCookies.sessionId;
-    let fakeSession = false;
+    let fakeSession = true;
     if (!session) {
         return res.status(400).json({
             statusCode: 400,
@@ -12,11 +12,11 @@ async function checkAuthentication(req, res, next) {
     }
     for (let i = 0; i < sessionList.length; i++) {
         if (session === sessionList[i].sessionId) {
-            fakeSession = true;
+            fakeSession = false;
             res.locals.role = sessionList[i].role;
         }
     }
-    if (fakeSession) {
+    if (!fakeSession) {
         next();
     }
     else

@@ -19,13 +19,6 @@ const create = async (req, res) => {
     input.month -= 1;
     input.reportDetails = [];
 
-    // Find all repair vote details in this month/year
-    let repairVoteList = await RepairVoteService.find().lean();
-    let repairVoteListInThisMonth = repairVoteList.filter(repairVote => {
-        return (repairVote.repairDate.getMonth() == input.month)
-            && (repairVote.repairDate.getFullYear() == input.year);
-    })
-
     // check if no repair happened this month / year
     if (repairVoteListInThisMonth.length == 0)
         return res.status(400).json({
@@ -131,13 +124,28 @@ const find = async (req, res) => {
 
 const findOne = async (req, res) => {
     try {
-        const id = req.params.id
+        const id = req.params.id;
         let objList = await InventoryReportService.findOne(id);
         return res.status(200).json(objList);
     } catch (err) {
         return res.status(500).json({
             statusCode: 500,
-            message: err.message || `Some errors occur while finding repair votes list`
+            message: err.message || `Some errors occur while finding inventory report list`
+        });
+    }
+}
+
+const deleteOne = async (req, res) => {
+    let id = req.params.id;
+    try {
+        await InventoryReportService.deleteOne(id);
+        return res.status(200).json({
+            message: 'Delete inventory report successfully'
+        })
+    } catch (err) {
+        return res.status(500).json({
+            statusCode: 500,
+            message: err.message || `Some errors occur while deleting inventory report`
         });
     }
 }
@@ -147,5 +155,6 @@ const findOne = async (req, res) => {
 module.exports = {
     find,
     findOne,
-    create
+    create,
+    deleteOne
 }

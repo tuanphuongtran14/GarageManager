@@ -22,4 +22,8 @@ exports.findOne = (id) =>{
     return Sale.findById(id).populate('saleDetails');
 }
 
+exports.deleteOne = (id) => {
+    return Sale.deleteOne({ _id: id })
+}
+
 /* `````````````````````````````````` */

@@ -1,5 +1,5 @@
 const { CarBrand, Parameter } = require('../models');
-const {find, findOne, update, deleteOne } = require('../configs/controller.template.config')(CarBrand);
+const {find, findOne, update } = require('../configs/controller.template.config')(CarBrand);
 const CarBrandService = require('../configs/service.template.config')(CarBrand);
 
 /* ````````````Declare your custom controller here `````````````````````*/
@@ -58,6 +58,26 @@ const create = async (req, res) => {
         });
     }
 }
+
+const deleteOne = async (req, res) => {
+    let id = req.params.id;
+    try {
+        let document = await CarBrandService.deleteOne(id);
+
+        // update parameter
+        let parameter = await Parameter.findOne({});
+        parameter.numberOfCarBrand -= 1;
+        await Parameter.update({}, parameter);
+
+        return res.status(200).json(document);
+    } catch (err) {
+        return res.status(500).json({
+            statusCode: 500,
+            message: err.message || `Some errors occur while deleting ${Model} with ID ${id}`
+        });
+    }
+}
+
 /* `````````````````````````````````````````````````````````````````````*/
 
 module.exports = {
