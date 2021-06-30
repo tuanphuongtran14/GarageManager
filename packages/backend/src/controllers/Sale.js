@@ -28,7 +28,7 @@ const create = async (req, res) => {
     if (repairVoteListInThisMonth.length == 0)
         return res.status(400).json({
             statusCode: 400,
-            message: 'No data found because no repair happened this time'
+            message: 'Không có dữ liệu vì không có sửa chữa nào xảy ra trong thời gian này!!!'
         });
 
     // Find total sale and report date

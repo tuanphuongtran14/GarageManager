@@ -18,7 +18,7 @@ const create = async (req, res) => {
     if (car) {
         return res.status(400).json({
             statusCode: 400,
-            message: 'Car is already in garage'
+            message: `Xe ${formInput.licensePlate} đã ở trong garage!!!`
         })
     }
 

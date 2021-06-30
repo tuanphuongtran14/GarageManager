@@ -30,7 +30,7 @@ const create = async (req, res) => {
     if (repairVoteListInThisMonth.length == 0)
         return res.status(400).json({
             statusCode: 400,
-            message: 'No data found because no repair happened this time'
+            message: 'Không có dữ liệu vì không đủ dữ liệu trong thời gian này!!!'
         });
 
     let repairVoteDetailList = [];

@@ -69,8 +69,12 @@ export default function MonthlyInventoryReport() {
                 setLoading(false);
             })
             .catch(error => {
-                if (error.response && error.response.data)
-                    alert("Lỗi: " + error.response.data.message);
+                if (error.response && error.response.data) {
+                    if(error.response.status === 400)
+                        alert(error.response.data.message);
+                    else
+                        alert("Lỗi: " + error.response.data.message);
+                }
 
                 // -- Turn off loading screen --
                 setLoading(false);
