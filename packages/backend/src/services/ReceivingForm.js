@@ -57,8 +57,8 @@ exports.create = async formInput => {
     // Create new receiving form
     let receivingForm = await new ReceivingForm({
         car: car._id,
-        isDone: false
-        /* receivingDate: new Date(formInput.receivingDate), */
+        isDone: false,
+        receivingDate: new Date(formInput.receivingDate),
     });
 
     await receivingForm.save();
