@@ -29,19 +29,17 @@ export default function CustomNavbar() {
   }
 
   const displayAccessoriesOnlyAdmin = () => {
-    if(sessionStorage.getItem('role') === 'Admin') {
+    if(sessionStorage.getItem('role')  === 'Admin') {
       return (
         <>
           <CustomDropdownItem to="/quan-ly-phu-tung/nhap-phu-tung" activeOnlyWhenExact={true} label={"Nhập vật tư phụ tùng"} />
-          <CustomDropdownItem to="/quan-ly-phu-tung/danh-sach-phu-tung" activeOnlyWhenExact={true} label={"Danh sách phụ tùng"} />
-          <CustomDropdownItem to="/quan-ly-phu-tung/danh-sach-tien-cong" activeOnlyWhenExact={true} label={"Danh sách tiền công"} />
         </>
       )
     }
   }
 
   const displaySettingOnlyAdmin = () => {
-    if(sessionStorage.getItem('role') === 'Admin') {
+    if(sessionStorage.getItem('role')  === 'Admin') {
       return (
         <CustomNavLink to="/cai-dat" activeOnlyWhenExact={true} label={"Cài đặt"} />
       )
@@ -73,9 +71,9 @@ export default function CustomNavbar() {
         <CustomNavLink to="/thu-tien" activeOnlyWhenExact={false} label={"Thu tiền"} />
 
         <CustomDropdownNavLink to="/quan-ly-phu-tung" activeOnlyWhenExact={false} title="Quản lý phụ tùng" menuvariant="dark">
-          <CustomDropdownItem to="/quan-ly-phu-tung/tra-cuu" activeOnlyWhenExact={true} label={"Tra cứu phụ tùng"} />
-          <CustomDropdownItem to="/quan-ly-phu-tung/tien-cong" activeOnlyWhenExact={true} label={"Tra cứu tiền công"} />
            {displayAccessoriesOnlyAdmin() }
+          <CustomDropdownItem to="/quan-ly-phu-tung/danh-sach-phu-tung" activeOnlyWhenExact={true} label={"Danh sách phụ tùng"} />
+          <CustomDropdownItem to="/quan-ly-phu-tung/danh-sach-tien-cong" activeOnlyWhenExact={true} label={"Danh sách tiền công"} />
         </CustomDropdownNavLink>
 
         { displayCreateReportOnlyAdmin() }

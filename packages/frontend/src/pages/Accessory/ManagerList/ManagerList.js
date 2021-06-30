@@ -69,10 +69,8 @@ export default function ManagerList() {
                     <td>{(index + 1).toString().padStart(3, 0)}</td>
                     <td>{accessory.name}</td>
                     <td className="text-center">{accessory.unitPrice.toLocaleString("DE-de")}đ</td>
-                    <td className="text-center">
-                        <button className="btn" onClick={event => hanldeClickDeleteButton(event, accessory)}><i className="fas fa-trash text-danger" aria-hidden="true" /></button>
-                        <button className="btn" onClick={event => handleClickEdit(event, accessory)}><i className="fas fa-edit text-success"></i></button>
-                    </td>
+                    <td className="text-center">{accessory.remaining }</td>
+                    { displayMethodOnlyAdmin(accessory) }
                 </tr>
             )
         })
@@ -221,17 +219,10 @@ export default function ManagerList() {
         fetchData();
     }, []);
 
-    if(sessionStorage.getItem('role') !== 'Admin') {
-        alert("Bạn không có quyền truy cập đường dẫn này");
-        history.push('/');
-    } 
-
-    return (
-        <>
-            <div className="container parent">
-                {displayLoading()}
-                <div className="box">
-                    <h4 className="text-center mb-4">Thêm loại vật tư phụ tùng mới</h4>
+    const displayAddOnlyAdmin = () => {
+        if(sessionStorage.getItem('role') === 'Admin') {
+            return (
+                <>
                     <div className="row mx-0">
                         <div className="col">
                             <div className="form-group">
@@ -251,6 +242,43 @@ export default function ManagerList() {
                         </div>
                     </div>
                     <hr className="hr--custom" />
+                </>
+            )
+        }
+    }
+
+    const displayMethodOnlyAdmin = accessory => {
+        if(sessionStorage.getItem('role') === 'Admin') {
+            return (
+                <td className="text-center">
+                    <button className="btn" onClick={event => hanldeClickDeleteButton(event, accessory)}><i className="fas fa-trash text-danger" aria-hidden="true" /></button>
+                    <button className="btn" onClick={event => handleClickEdit(event, accessory)}><i className="fas fa-edit text-success"></i></button>
+                </td>
+            )
+        }
+    }
+
+    const displayMethodTitleOnlyAdmin = () => {
+        if(sessionStorage.getItem('role') === 'Admin') {
+            return (
+                <th className="text-center">Thao tác</th>
+            )
+        }
+    }
+
+
+    // if(sessionStorage.getItem('role') !== 'Admin') {
+    //     alert("Bạn không có quyền truy cập đường dẫn này");
+    //     history.push('/');
+    // } 
+
+    return (
+        <>
+            <div className="container parent">
+                {displayLoading()}
+                <div className="box">
+                    <h4 className="text-center mb-4">Danh sách phụ tùng</h4>
+                    { displayAddOnlyAdmin() }
                     <div className="d-flex align-items-center">
                         <label className="mr-3" htmlFor>Tên phụ tùng:</label>
                         <input type="text" className="form-control search-input mr-5" name="searchInput" id="searchInput" aria-describedby="helpId" placeholder />
@@ -263,7 +291,8 @@ export default function ManagerList() {
                                     <th>STT</th>
                                     <th>Tên phụ tùng</th>
                                     <th className="text-center">Đơn giá</th>
-                                    <th className="text-center">Thao tác</th>
+                                    <th className="text-center">Số lượng còn</th>
+                                    { displayMethodTitleOnlyAdmin() }
                                 </tr>
                             </thead>
                             <tbody>

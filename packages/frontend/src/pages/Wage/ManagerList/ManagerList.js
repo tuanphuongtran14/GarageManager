@@ -67,10 +67,7 @@ export default function ManagerList() {
                     <td>{(index + 1).toString().padStart(3, 0)}</td>
                     <td>{wage.name}</td>
                     <td className="text-center">{wage.price.toLocaleString("DE-de")}đ</td>
-                    <td className="text-center">
-                        <button className="btn" onClick={event => hanldeClickDeleteButton(event, wage)}><i className="fas fa-trash text-danger"></i></button>
-                        <button className="btn" onClick={event => handleClickEdit(event, wage)}><i className="fas fa-edit text-success"></i></button>
-                    </td>
+                    { displayMethodOnlyAdmin() }
                 </tr>
             )
         })
@@ -205,18 +202,15 @@ export default function ManagerList() {
     }, []);
 
     
-    if(sessionStorage.getItem('role') !== 'Admin') {
-        alert("Bạn không có quyền truy cập đường dẫn này");
-        history.push('/');
-    } 
-
-
-    return (
-        <>
-            <div className="container parent">
-                {displayLoading()}
-                <div className="box">
-                    <h4 className="text-center mb-4">Thêm loại tiền công mới</h4>
+    // if(sessionStorage.getItem('role') !== 'Admin') {
+    //     alert("Bạn không có quyền truy cập đường dẫn này");
+    //     history.push('/');
+    // } 
+    
+    const displayAddOnlyAdmin = () => {
+        if(sessionStorage.getItem('role') === 'Admin') {
+            return (
+                <>
                     <div className="row mx-0">
                         <div className="col">
                             <div className="form-group">
@@ -236,6 +230,38 @@ export default function ManagerList() {
                         </div>
                     </div>
                     <hr className="hr--custom" />
+                </>
+            )
+        }
+    }
+
+    const displayMethodOnlyAdmin = wage => {
+        if(sessionStorage.getItem('role') === 'Admin') {
+            return (
+                <td className="text-center">
+                    <button className="btn" onClick={event => hanldeClickDeleteButton(event, wage)}><i className="fas fa-trash text-danger"></i></button>
+                    <button className="btn" onClick={event => handleClickEdit(event, wage)}><i className="fas fa-edit text-success"></i></button>
+                </td>
+            )
+        }
+    }
+
+    const displayMethodTitleOnlyAdmin = () => {
+        if(sessionStorage.getItem('role') === 'Admin') {
+            return (
+                <th className="text-center">Thao tác</th>
+            )
+        }
+    }
+
+
+    return (
+        <>
+            <div className="container parent">
+                {displayLoading()}
+                <div className="box">
+                    <h4 className="text-center mb-4">Danh sách tiền công</h4>
+                    { displayAddOnlyAdmin() }
                     <div className="d-flex align-items-center">
                         <label className="mr-3" htmlFor>Tên tiền công:</label>
                         <input type="text" className="form-control search-input mr-5" name="searchInput" id="searchInput" aria-describedby="helpId" placeholder />
@@ -248,7 +274,7 @@ export default function ManagerList() {
                                     <th>STT</th>
                                     <th>Tên tiền công</th>
                                     <th className="text-center">Giá</th>
-                                    <th className="text-center">Thao tác</th>
+                                    { displayMethodTitleOnlyAdmin() }
                                 </tr>
                             </thead>
                             <tbody>
