@@ -16,14 +16,45 @@ export default function MonthlySalesReport() {
         event.preventDefault();
         // -- Turn on loading screen --
         setLoading(true);
+        
+        const month = document.getElementById("month").value;
+        const year = document.getElementById("year").value;
+
+        if(!month) {
+            alert("Bạn chưa nhập tháng!!!");
+            // -- Turn off loading screen --
+            setLoading(false);
+            return;
+        }
+
+        if(!year) {
+            alert("Bạn chưa nhập năm!!!");
+            // -- Turn off loading screen --
+            setLoading(false);
+            return;
+        }
+
+        if(Number(month) < 1 || Number(month) > 12) {
+            alert("Tháng nhập vào không hợp lệ!!!");
+            // -- Turn off loading screen --
+            setLoading(false);
+            return;
+        }
+
+        if(Number(year) < 0) {
+            alert("Năm nhập vào không hợp lệ!!!");
+            // -- Turn off loading screen --
+            setLoading(false);
+            return;
+        }
 
         // -- Create report --
         axios({
             method: 'POST',
             url: '/api/sales',
             data: {
-                month: document.getElementById("month").value,
-                year: document.getElementById("year").value,
+                month: month,
+                year: year
             }
         })
             .then(response => {

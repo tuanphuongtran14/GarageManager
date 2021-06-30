@@ -18,10 +18,40 @@ export default function MonthlyInventoryReport() {
         setLoading(true);
 
         // -- Get today --
-        const today = new Date();
-        const month = today.getMonth() + 1;
-        const year = today.getFullYear();
-        console.log(month, year)
+        // const today = new Date();
+        // const month = today.getMonth() + 1;
+        // const year = today.getFullYear();
+        // console.log(month, year)
+        const month = document.getElementById("month").value;
+        const year = document.getElementById("year").value;
+
+        if(!month) {
+            alert("Bạn chưa nhập tháng!!!");
+            // -- Turn off loading screen --
+            setLoading(false);
+            return;
+        }
+
+        if(!year) {
+            alert("Bạn chưa nhập năm!!!");
+            // -- Turn off loading screen --
+            setLoading(false);
+            return;
+        }
+
+        if(Number(month) < 1 || Number(month) > 12) {
+            alert("Tháng nhập vào không hợp lệ!!!");
+            // -- Turn off loading screen --
+            setLoading(false);
+            return;
+        }
+
+        if(Number(year) < 0) {
+            alert("Năm nhập vào không hợp lệ!!!");
+            // -- Turn off loading screen --
+            setLoading(false);
+            return;
+        }
 
         // -- Create report --
         axios({
@@ -148,6 +178,10 @@ export default function MonthlyInventoryReport() {
                 <div className="box">
                     <h4 className="text-center mb-4">Lập báo cáo tồn tháng</h4>
                     <div className="d-flex align-items-center justify-content-center mb-4">
+                        <label className="mr-3" htmlFor>Tháng:</label>
+                        <input type="text" className="form-control month-input mr-5" name="month" id="month" aria-describedby="helpId" placeholder />
+                        <label className="mr-3" htmlFor>Năm:</label>
+                        <input type="text" className="form-control year-input mr-5" name="year" id="year" aria-describedby="helpId" placeholder />
                         <button type="submit" className="btn btn-primary" onClick={handleSubmit}>Lập báo cáo ngay</button>
                     </div>
                     {displayReport()}
