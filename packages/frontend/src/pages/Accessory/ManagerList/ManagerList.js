@@ -223,16 +223,16 @@ export default function ManagerList() {
         if(sessionStorage.getItem('role') === 'Admin') {
             return (
                 <>
-                    <div className="row mx-0">
-                        <div className="col">
+                    <div className="row mx-0 px-0">
+                        <div className="col pl-0">
                             <div className="form-group">
-                                <label htmlFor="">Tên phụ tùng</label>
+                                <label htmlFor="">Tên phụ tùng <span class="text-danger">(*)</span></label>
                                 <input type="text" className="form-control" name="name" id="name" aria-describedby="helpId" />
                             </div>
                         </div>
                         <div className="col">
                             <div className="form-group">
-                                <label htmlFor="unitPrice">Đơn giá</label>
+                                <label htmlFor="unitPrice">Đơn giá <span class="text-danger">(*)</span></label>
                                 <input type="number" className="form-control" name="unitPrice" id="unitPrice" aria-describedby="helpId" />
                             </div>
                         </div>

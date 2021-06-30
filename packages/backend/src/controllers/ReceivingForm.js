@@ -2,6 +2,31 @@ const { ReceivingForm, Car } = require('../models');
 const ReceivingFormService = require('../services/ReceivingForm');
 
 /* ````````````Declare your custom controller here `````````````````````*/
+
+const search = async (req, res) => {
+    let query = req.query;
+    try {
+        let receivingForms = await ReceivingForm.find({}).populate({
+            path: "car",
+            populate: {
+                path: 'carOwner',
+                model: 'Customer'
+            }
+        });
+        if (query.licensePlate)
+            receivingForms = receivingForms.filter(receivingForm => {
+                return receivingForm.car.licensePlate.toLowerCase().indexOf(query.licensePlate.toLowerCase()) !== -1;
+            })
+
+        return res.status(200).json(receivingForms);
+    } catch (err) {
+        return res.status(500).json({
+            statusCode: 500,
+            message: err.message || `Some errors happened when finding receving forms`
+        });
+    }
+}
+
 const create = async (req, res) => {
     let formInput = req.body;
 
@@ -67,5 +92,6 @@ module.exports = {
     find,
     findOne,
     create,
+    search
 }
 

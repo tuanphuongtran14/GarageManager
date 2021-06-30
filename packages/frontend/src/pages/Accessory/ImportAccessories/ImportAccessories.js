@@ -112,7 +112,7 @@ export default function ImportAccessory() {
                     <div className="row">
                         <div className="col">
                             <div className="form-group">
-                                <label>Tên phụ tùng mới</label>
+                                <label>Tên phụ tùng mới <span class="text-danger">(*)</span></label>
                                 <Select
                                     options={accessoryOptions}
                                     components={{
@@ -126,7 +126,7 @@ export default function ImportAccessory() {
                         </div>
                         <div className="col">
                             <div className="form-group">
-                                <label htmlFor="amount">Số lượng</label>
+                                <label htmlFor="amount">Số lượng <span class="text-danger">(*)</span></label>
                                 <input type="number" className="form-control" id="amount" name="amount" aria-describedby="helpId" defaultValue={1} min={1} />
                             </div>
                         </div>

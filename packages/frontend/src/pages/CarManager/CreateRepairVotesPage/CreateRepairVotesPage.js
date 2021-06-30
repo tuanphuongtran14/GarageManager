@@ -91,7 +91,7 @@ export default function CreateRepairVotesPage() {
 
     var minDate = year + '-' + month + '-' + day;
 
-    document.getElementById('repairDate').setAttribute('min', minDate);
+    document.getElementById('repairDate').setAttribute('value', minDate);
   })
 
   const handleCarOnChange = (selectedOption) => {
@@ -473,7 +473,7 @@ export default function CreateRepairVotesPage() {
             <div className="row px-0 mt-4">
               <div className="col">
                 <div className="form-group">
-                  <label>Biển số xe</label>
+                  <label>Biển số xe <span class="text-danger">(*)</span></label>
                   <Select
                     placeholder={"Ví dụ: 51G-12345"}
                     options={carOptions}
@@ -490,7 +490,7 @@ export default function CreateRepairVotesPage() {
               <div className="col">
                 <div className="form-group">
                   <label>Ngày sửa chữa</label>
-                  <input type="date" id="repairDate" name="repairDate" className="form-control" aria-describedby="helpId" />
+                  <input type="date" id="repairDate" disabled name="repairDate" className="form-control" aria-describedby="helpId" />
                 </div>
               </div>
               <div className="col">
@@ -504,13 +504,13 @@ export default function CreateRepairVotesPage() {
             <div className="row">
               <div className="col-6 col-lg">
                 <div className="form-group">
-                  <label>Nội dung</label>
+                  <label>Nội dung <span class="text-danger">(*)</span></label>
                   <input type="text" id="content" name="content" onChange={handleContentOnChange} className="form-control" aria-describedby="helpId" placeholder="Nội dung sửa chữa" />
                 </div>
               </div>
               <div className="col-6 col-lg">
                 <div className="form-group selectpicker--custom">
-                  <label>Vật tư phụ tùng</label>
+                  <label>Vật tư phụ tùng <span class="text-danger">(*)</span></label>
                   <Select
                     defaultValue={accessoryOptions[0]}
                     options={accessoryOptions}
@@ -526,13 +526,13 @@ export default function CreateRepairVotesPage() {
               </div>
               <div className="col-3 col-lg-2">
                 <div className="form-group">
-                  <label>Số lượng</label>
+                  <label>Số lượng <span class="text-danger">(*)</span></label>
                   <input type="number" id="quantity" name="quantity" onBlur={handleQuantityOnBlur} disabled className="form-control" aria-describedby="helpId" defaultValue={0} min={1} />
                 </div>
               </div>
               <div className="col-6 col-lg">
                 <div className="form-group selectpicker--custom">
-                  <label>Tiền công</label>
+                  <label>Tiền công <span class="text-danger">(*)</span></label>
                   <Select
                     defaultValue={wageOptions[0]}
                     options={wageOptions}

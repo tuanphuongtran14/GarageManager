@@ -65,6 +65,7 @@ export default function CustomNavbar() {
           <CustomDropdownItem to="/quan-ly-xe/tiep-nhan-xe" activeOnlyWhenExact={false} label="Tiếp nhận xe" />
           <CustomDropdownItem to="/quan-ly-xe/lap-phieu-sua-chua" activeOnlyWhenExact={false} label={"Lập phiếu sửa chữa"} />
           <CustomDropdownItem to="/quan-ly-xe/tra-cuu-xe" activeOnlyWhenExact={false} label={"Tra cứu xe"} />
+          <CustomDropdownItem to="/quan-ly-xe/danh-sach-phieu-tiep-nhan" activeOnlyWhenExact={false} label={"Danh sách phiếu tiếp nhận"} />
           { displayCarBrandOnlyAdmin() }
         </CustomDropdownNavLink>
 

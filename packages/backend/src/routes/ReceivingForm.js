@@ -1,6 +1,9 @@
 var express = require('express');
 var router = express.Router();
-const { create, find, findOne } = require('../controllers/ReceivingForm');
+const { create, find, findOne, search } = require('../controllers/ReceivingForm');
+
+/* GET search receiving form */
+router.get('/search', search);
 
 /* POST send new receiving form */
 router.post('/', create);

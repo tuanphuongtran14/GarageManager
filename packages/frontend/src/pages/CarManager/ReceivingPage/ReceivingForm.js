@@ -132,6 +132,11 @@ function ReceivingForm(props) {
         const address = document.getElementById('address');
         const receivingDate = document.getElementById('receivingDate');
 
+        if(!licensePlate.value || !name.value || !email.value || !phoneNumber.value || !address.value) {
+            alert("Bạn chưa nhập đủ thông tin!!!");
+            return;
+        }
+
 
         const formData = {
             licensePlate: licensePlate.value,
@@ -146,7 +151,6 @@ function ReceivingForm(props) {
         props.setLoading(true);
 
 
-        console.log(formData);
         axios({
             method: 'POST',
             url: '/api/receiving-forms',
@@ -184,7 +188,9 @@ function ReceivingForm(props) {
                                 alert("Lỗi: " + error.response.data.message);
                             props.setLoading(false);
                         })
-
+                    
+                    document.getElementById("resetBtn").click();
+                    handleReset();
                 }
             })
             .catch(error => {
@@ -192,7 +198,7 @@ function ReceivingForm(props) {
                     alert("Lỗi: " + error.response.data.message);
                 props.setLoading(false);
             })
-
+            
     }
 
     // Handle when submit form 
@@ -209,13 +215,13 @@ function ReceivingForm(props) {
                 <div className="row px-0">
                     <div className="col-6">
                         <div className="form-group">
-                            <label>Biển số xe</label>
+                            <label>Biển số xe <span class="text-danger">(*)</span></label>
                             <input type="text" name="licensePlate" id="licensePlate" autoFocus placeholder="Ví dụ: 51G-12345" className="form-control" aria-describedby="helpId" onChange={handleCarOnChange} />
                         </div>
                     </div>
                     <div className="col-6 pl-0">
                         <div className="form-group">
-                            <label>Hiệu xe</label>
+                            <label>Hiệu xe <span class="text-danger">(*)</span></label>
                             <Select
                                 id="carBrand"
                                 placeholder={"Chọn hiệu xe"}
@@ -233,30 +239,30 @@ function ReceivingForm(props) {
 
 
                 <div className="form-group">
-                    <label>Tên chủ xe</label>
+                    <label>Tên chủ xe <span class="text-danger">(*)</span></label>
                     <input type="text" id="name" name="name" placeholder="Ví dụ: Nguyễn Văn A" className="form-control" aria-describedby="helpId" />
                 </div>
                 <div className="form-group">
-                    <label>Số điện thoại</label>
+                    <label>Số điện thoại <span class="text-danger">(*)</span></label>
                     <input type="text" id="phoneNumber" placeholder="Ví dụ: 0369002357" name="phoneNumber" className="form-control" aria-describedby="helpId" />
                 </div>
                 <div className="form-group">
-                    <label>Email</label>
+                    <label>Email <span class="text-danger">(*)</span></label>
                     <input type="email" id="email" name="email" placeholder="Ví dụ: tuanphuongtran.14@gmail.com" className="form-control" aria-describedby="helpId" />
                 </div>
                 <div className="form-group">
-                    <label>Địa chỉ</label>
+                    <label>Địa chỉ <span class="text-danger">(*)</span></label>
                     <input type="text" id="address" name="address" placeholder="Ví dụ: Q4, TP.HCM" className="form-control" aria-describedby="helpId" />
                 </div>
 
 
                 <div className="form-group">
                     <label>Ngày tiếp nhận</label>
-                    <input type="date" id="receivingDate" name="receivingDate" className="form-control" onBlur={handleReceivingDateOnChange} />
+                    <input type="date" id="receivingDate" name="receivingDate" disabled className="form-control" onBlur={handleReceivingDateOnChange} />
                 </div>
                 <div className="d-flex justify-content-between mt-4">
                     <button type="submit" className="btn btn-success w-50" onClick={handleSubmit}>Gửi ngay</button>
-                    <button type="reset" className="btn btn-danger" onClick={handleReset}><i className="fas fa-redo"></i> &nbsp; Nhập lại</button>
+                    <button type="reset" className="btn btn-danger" id="resetBtn" onClick={handleReset}><i className="fas fa-redo"></i> &nbsp; Nhập lại</button>
                 </div>
             </form>
         </div>

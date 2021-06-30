@@ -212,15 +212,15 @@ export default function ManagerList() {
             return (
                 <>
                     <div className="row mx-0">
-                        <div className="col">
+                        <div className="col pl-0">
                             <div className="form-group">
-                                <label htmlFor="">Tên tiền công</label>
+                                <label htmlFor="">Tên tiền công <span class="text-danger">(*)</span></label>
                                 <input type="text" className="form-control" name="name" id="name" aria-describedby="helpId" />
                             </div>
                         </div>
                         <div className="col">
                             <div className="form-group">
-                                <label htmlFor="price">Giá</label>
+                                <label htmlFor="price">Giá  <span class="text-danger">(*)</span></label>
                                 <input type="number" className="form-control" name="price" id="price" aria-describedby="helpId" />
                             </div>
                         </div>

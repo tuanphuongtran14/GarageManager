@@ -205,7 +205,7 @@ export default function CollectMoney() {
             <div className="row px-0">
               <div className="col-4">
                 <div className="form-group">
-                  <label htmlFor>Biển số</label>
+                  <label htmlFor>Biển số <span class="text-danger">(*)</span></label>
                   <Select
                     placeholder={"Ví dụ: 51G-12345"}
                     options={carOptions}
@@ -221,32 +221,32 @@ export default function CollectMoney() {
               </div>
               <div className="col-4">
                 <div className="form-group">
-                  <label htmlFor>Ngày thu tiền</label>
-                  <input type="date" className="form-control" name="collectDate" id="collectDate" aria-describedby="helpId" />
+                  <label htmlFor>Ngày thu tiền <span class="text-danger">(*)</span></label>
+                  <input type="date" disabled className="form-control" name="collectDate" id="collectDate" aria-describedby="helpId" />
                 </div>
               </div>
               <div className="col-4">
                 <div className="form-group">
-                  <label htmlFor>Số tiền thu</label>
+                  <label htmlFor>Số tiền thu <span class="text-danger">(*)</span></label>
                   <input type="number" className="form-control" name="amount" id="amount" aria-describedby="helpId" defaultValue={0} />
                   { displayDebt() }
                 </div>
               </div>
               <div className="col-4">
                 <div className="form-group">
-                  <label htmlFor>Họ tên chủ xe</label>
+                  <label htmlFor>Họ tên chủ xe <span class="text-danger">(*)</span></label>
                   <input type="text" className="form-control" name="customerName" id="customerName" aria-describedby="helpId" placeholder readOnly />
                 </div>
               </div>
               <div className="col-4">
                 <div className="form-group">
-                  <label htmlFor>Điện thoại</label>
+                  <label htmlFor>Điện thoại <span class="text-danger">(*)</span></label>
                   <input type="text" className="form-control" name="phoneNumber" id="phoneNumber" aria-describedby="helpId" />
                 </div>
               </div>
               <div className="col-4">
                 <div className="form-group">
-                  <label htmlFor>Email</label>
+                  <label htmlFor>Email <span class="text-danger">(*)</span></label>
                   <input type="email" className="form-control" name="email" id="email" aria-describedby="helpId" />
                 </div>
               </div>
